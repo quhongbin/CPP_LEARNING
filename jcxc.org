@@ -1,0 +1,7 @@
+* Process
+- A basic resources unit which is assigned with memory in OS
+- Has isolated memory address
+
+* Thread
+- A basic unit is called by CPU
+- rely on and within [[Process][Process]]
