@@ -12,4 +12,3 @@
 -   Hash Table
 
 [[Excalidraw/HashMap|HashMap]]
-
