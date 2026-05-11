@@ -1,4 +1,3 @@
-
 -   construct the reflection between key and value to archieve element-query with
 > get value from hash table through index which calculate the input key with hash function 
 
@@ -14,15 +13,18 @@
 |  add   | O(1)  | O(1) | O(1)      |
 | delete | O(n)  | O(n) | O(1)      |
 [[Excalidraw/HashMap|HashMap]]
-![[file-20260507180010665.png]]
+[![HashTable](./assets/HashTable/file-20260507180010665.png)]
+
 # Hash conflict
 - there are many situations that *n*-to-1, namely *N* input keys is reflected to one value
 
-![[file-20260507180001398.png]]
+[ ![Hash-conflict]( ./assets/HashTable/file-20260507180001398.png ) ]
+
 #### How to optimize the Hash Table for Hash conflict
 - separate chaining
 	conbine same index which calculate with hash function as singal link
-	![[file-20260507175933865.png]]
+	[ ![separate-chaining]( ./assets/HashTable/file-20260507175933865.png ) ]
+
 - open addressing
     1. linear detection
     2. square detection
