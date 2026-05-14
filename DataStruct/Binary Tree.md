@@ -45,12 +45,15 @@ while all nodes points left node or right node, which is a link
 					push rNode into Q
 			return V
 	```
-	> BFS use queue which is a data struct follow FIFO rule
-	
+	> BFS use queue which is a data struct follow FIFO rule[[constant value and string]]
+n	
 1. pre/in/post-order traversal
 	- base on depth-first search algorithm
 	```algorithm
-		fun DFS(RootNode)
-		
+		DFS(RootNode)
+			if RootNode == nullptr:
+				return;
+			DFS(RootNode->lnode);
+			DFS(RootNode->rnode);
 	```
-	> DFS follow 
+	> DFS follow LIFO rule
