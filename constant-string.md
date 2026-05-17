@@ -1,3 +1,25 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # const and constexpr
 1. on variable value
 	- "const" modifies an object or value,which hasn't been changing:RiComputerFill:

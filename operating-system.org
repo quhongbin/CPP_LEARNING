@@ -10,8 +10,10 @@
 * Thread
 - A basic unit is called by CPU
 - rely on and within [[Process]]
+* coroutine
+- 
 
-| *dimension*                      | *Process*                              | *thread*                                 | *coroutine*                               |
+| *dimension*                      | *Process*                                | *thread*                                   | *coroutine*                                 |
 | *caller*                         | os's kernel                            | os's kernel                              | user program                              |
 | *memory space*                   | Individual(no shared)                  | share with Memory of Process             | share with Memory of Proces               |
 | *switching performance overhead* | very high (us-ms)                      | middle(us)                               | low(ns)                                   |
@@ -19,3 +21,10 @@
 | *concurrent ability*             | multicore                              | multicore                                | concurrent within singal thread           |
 | *usage*                          | sandbox, dense scenario of CPU-process | Web service, dense scenario I/O          | high-concurrent gateway,async web crawler |
 
+[[memory alignment.excalidraw]]
+
+
+Memory Alignment means:
+- the memory address where is stored by values is multiple of its value's bytes
+
+* stack and heap
