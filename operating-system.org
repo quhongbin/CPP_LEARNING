@@ -1,3 +1,8 @@
+:PROPERTIES:
+:ID:       7dd96312-bc82-4342-977a-256753a9229a
+:END:
+#+title: operating-system
+
 * Process
 - A basic resources unit which is assigned with memory in OS
 - Has isolated memory address
