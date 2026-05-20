@@ -5,10 +5,10 @@ struct Node {
   int val;
   std::unique_ptr<Node> lnode;
   std::unique_ptr<Node> rnode;
-  Node(int x):val(x){};
+  Node(int x) : val(x) {};
 };
 
-void DFS(Node *root_node){
+void DFS(Node *root_node) {
   if (root_node == nullptr)
     return;
   DFS(root_node->lnode.get());
@@ -16,7 +16,7 @@ void DFS(Node *root_node){
   std::cout << root_node->val;
 }
 
-int main(){
+int main() {
   auto root = std::make_unique<Node>(0);
   root->lnode = std::make_unique<Node>(1);
   root->rnode = std::make_unique<Node>(2);

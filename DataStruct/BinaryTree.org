@@ -1,8 +1,7 @@
-#+begin_quote
-a non-linear data struct # Binary Tree
-#+end_quote
+* a non-linear data struct # Binary Tree
 
 ## General Technical Terms
+
 | Terms       | explanation                                                      |
 | :---------: | :--------------------------------------------------------------: |
 | root node   | the top node of binary tree                                      |
@@ -33,9 +32,14 @@ a non-linear data struct # Binary Tree
    - assume \(d\) is Height difference of any node that left child-tree height subtract right child-tree height satisfy \(\lvert d \rvert \le 1\)
 
 ** Binary Tree Degradation
+
 while all nodes points left node or right node, which is a link
 
-** Binary Tree traversal
+** Binary Tree traversal                                             :ATTACH:
+:PROPERTIES:
+:ID:       47fe521c-a0f3-4721-939a-756cb7f05c02
+:END:
+
 :PROPERTIES:
 :CUSTOM_ID: binary-tree-traversal
 :ID:       5583576b-fdca-47db-a28b-d859924bbfc3
@@ -44,7 +48,7 @@ while all nodes points left node or right node, which is a link
 1. level-order traversal (level-by-level)
    - base on breadth-first search algorithm
 
-   #+begin_src algorithm
+   #+begin_src ruby
         BFS(RootNode)
            create Q queue of node
            push RootNode into Q
@@ -64,8 +68,8 @@ while all nodes points left node or right node, which is a link
    #+end_quote
 
 2. pre/in/post-order traversal
- x  - base on depth-first search algorithm
-   #+begin_src algorithm
+   - base on depth-first search algorithm
+   #+begin_src ruby
        DFS(RootNode)
            if RootNode == nullptr:
                return;
@@ -78,4 +82,7 @@ while all nodes points left node or right node, which is a link
    #+end_quote
 
 ## array for Binary Tree
+- left child index satisfy $2i+1$
+- right child index satisfy $2i+1$
 
+  
