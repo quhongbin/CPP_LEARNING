@@ -85,4 +85,4 @@ while all nodes points left node or right node, which is a link
 - left child index satisfy $2i+1$
 - right child index satisfy $2i+1$
 
-  
+
