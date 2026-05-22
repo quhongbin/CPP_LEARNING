@@ -1,10 +1,12 @@
+#+title: operating-system
+
 #+STARTUP: inlineimages
 :PROPERTIES:
 :ID:       7dd96312-bc82-4342-977a-256753a9229a
 :END:
 #+title: operating-system
 
-n* Process
+* Process
 - A basic resources unit which is assigned with memory in OS
 - Has isolated memory address
 
@@ -22,7 +24,7 @@ n* Process
 | *concurrent ability*             | multicore                              | multicore                                | concurrent within singal thread           |
 | *usage*                          | sandbox, dense scenario of CPU-process | Web service, dense scenario I/O          | high-concurrent gateway,async web crawler |
 
-[[memory alignment.excalidraw]]
+[[file:memory_alignment.excalidraw]]
 
 Memory Alignment means:
 - the memory address where is stored by values is multiple of its value's bytes

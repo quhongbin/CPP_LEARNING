@@ -1,6 +1,8 @@
+#+title: BinaryTree
+
 * a non-linear data struct # Binary Tree
 
-## General Technical Terms
+** General Technical Terms
 
 | Terms       | explanation                                                      |
 | :---------: | :--------------------------------------------------------------: |
@@ -81,8 +83,20 @@ while all nodes points left node or right node, which is a link
    DFS follow LIFO rule
    #+end_quote
 
-## array for Binary Tree
+** array for Binary Tree
 - left child index satisfy $2i+1$
-- right child index satisfy $2i+1$
+- right child index satisfy $2i+2$
 
+[[file:../Excalidraw/BT_array.png]]
+
+
+** Binary Search Tree
+1. the value of left-subtree nodes < the value of root node < the value of right-subtree nodes<<anchor_BST>>
+2. left-subtree right-subtree of any node is also BST, namely satisfy [[#anchor_BST][1]]
+
+
+** AVL Tree
+
+
+** Heap
 

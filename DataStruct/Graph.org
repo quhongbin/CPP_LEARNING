@@ -1,0 +1,19 @@
+#+title: graph
+#+author: Hongbin Qu
+#+date: <2026-05-22 Fri>
+
+* graph
+
+#+begin_quote
+A non-linear data struct which conbined with vertex and edge
+#+end_quote
+
+** Declaration for Graph
+1. adjacency matrix
+
+
+
+2. adjacency list
+
+   
+
