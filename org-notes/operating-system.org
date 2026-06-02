@@ -7,13 +7,25 @@
 #+title: operating-system
 
 * Process
+:PROPERTIES:
+:ROAM_ALIASES: OS process
+:ID:       84dc9817-d304-46ce-b33f-273bfeee4f09
+:END:
 - A basic resources unit which is assigned with memory in OS
 - Has isolated memory address
 
 * Thread
+:PROPERTIES:
+:ID:       4d306248-c201-4184-991b-f0f69de4b946
+:ROAM_ALIASES: thread
+:END:
 - A basic unit is called by CPU
 - rely on and within [[Process]]
 * coroutine
+:PROPERTIES:
+:ROAM_ALIASES: coroutine
+:ID:       3acc4521-f68f-4266-8324-0c4de538f9b5
+:END:
 - 
 
 | *dimension*                      | *Process*                                | *thread*                                   | *coroutine*                                 |
@@ -30,3 +42,7 @@ Memory Alignment means:
 - the memory address where is stored by values is multiple of its value's bytes
 
 * stack and heap
+:PROPERTIES:
+:ROAM_ALIASES: stack heap
+:ID:       ec82f92c-b04b-4f3e-a00c-dfe5b21563e0
+:END:

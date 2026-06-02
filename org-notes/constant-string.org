@@ -1,5 +1,9 @@
 #+title: constant-string
 # const and constexpr
+:PROPERTIES:
+:ROAM_ALIASES: const constexpr
+:ID:       91a920ec-9bec-4391-9b32-0e857533781a
+:END:
 1. on variable value
 	- "const" modifies an object or value,which hasn't been changing:RiComputerFill:
 	- "constexpr" decorates value of expression which is known at compile-time:RiTimer2Line:
@@ -10,6 +14,10 @@
 	- it must evaluate the result at compile-time
 
 # std::string & std::string_view
+:PROPERTIES:
+:ROAM_ALIASES: string string_view
+:ID:       d637ba3b-8b53-4e94-8aac-7ae9879f986b
+:END:
 > they aren't basic types, but class types
 
 in C++,we should avoid using C-style string that use strings around double quotation marks 
@@ -19,6 +27,10 @@ string is variable-length value, unlike basic types (e.g int,unsigned int) have 
 it cast expensive performance overhead that copy a data that std::string object points to, so that we shouldn't directly use "=", nor any operation of value of copying assignment
 
 # compile-time optimization
+:PROPERTIES:
+:ROAM_ALIASES: constant-folding
+:ID:       b13943f1-a2ac-4a4b-ac71-4f1feb1afa48
+:END:
 as-if rule
 - use "const" keyword to decorate variable always
 - the constant value propagation
