@@ -1,0 +1,139 @@
+#+title: operating-system
+
+#+STARTUP: inlineimages
+:PROPERTIES:
+:ID:       7dd96312-bc82-4342-977a-256753a9229a
+:END:
+#+title: operating-system
+
+* Process
+:PROPERTIES:
+:ROAM_ALIASES: OS process
+:ID:       84dc9817-d304-46ce-b33f-273bfeee4f09
+:END:
+- A basic resources unit which is assigned with memory in OS
+- Has isolated memory address
+
+* Thread
+
+:PROPERTIES:
+:ID:       4d306248-c201-4184-991b-f0f69de4b946
+:ROAM_ALIASES: thread
+:END:
+
+- A basic unit is called by CPU
+- rely on and within [[Process]]
+
+* coroutine
+
+:PROPERTIES:
+:ROAM_ALIASES: coroutine
+:ID:       3acc4521-f68f-4266-8324-0c4de538f9b5
+:END:
+- 
+
+| *dimension*                      | *Process*                              | *thread*                                 | *coroutine*                               |
+| *caller*                         | os's kernel                            | os's kernel                              | user program                              |
+| *memory space*                   | Individual(no shared)                  | share with Memory of Process             | share with Memory of Proces               |
+| *switching performance overhead* | very high (us-ms)                      | middle(us)                               | low(ns)                                   |
+| *parallel*                       | hundreds of concurrent cons            | Several thousand up to tens of thousands | hundreds of thousands to millions         |
+| *concurrent ability*             | multicore                              | multicore                                | concurrent within singal thread           |
+| *usage*                          | sandbox, dense scenario of CPU-process | Web service, dense scenario I/O          | high-concurrent gateway,async web crawler |
+
+[[file:memory_alignment.excalidraw]]
+
+Memory Alignment means:
+- the memory address where is stored by values is multiple of its value's bytes
+
+* stack and heap                                                     :ATTACH:
+:PROPERTIES:
+:ROAM_ALIASES: stack heap
+:ID:       ec82f92c-b04b-4f3e-a00c-dfe5b21563e0
+:END:
+[[attachment:clipboard-20260607T141249.png]]
+
+* Virtualization(Three Easy Pieces)
+
+** The Process
+*** A Process
+- consititutes of a process
+  1. memory
+  2. address space
+  3. registers
+*** Process API
+- Every OS must be included these ideas above
+ *Create*: The OS is invoked to create a new process to run program you have indicated
+ *Destroy*: A interface to halt runaway process is quite useful
+ *Wait*: To wait for a process to stop running
+ *Miscellaneous Control*: there are sometimes other controls that are possible. For example, some kind of method to suspend a process
+ *Status*: Interfaces to get some status information about a Process
+
+UNIX present two interfaces to create new process, both are fork() and exec()
+- the fork() system call
+#+begin_src C
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+
+int main(int argc, char *argv[])
+{
+  printf("hello world (pid:%d)\n", (int) getpid());
+  int rc = fork();
+  if (rc < 0) { // fork failed; exit
+    fprintf(stderr, "fork failed\n");
+    exit(1);
+  } else if (rc == 0) { // child (new process)
+    printf("hello, I am child (pid:%d)\n", (int) getpid());
+  } else { // parent goes down this path (main)
+    printf("hello, I am parent of %d (pid:%d)\n",
+	   rc, (int) getpid());
+  }
+return 0;
+}
+#+end_src
+
+#+RESULTS:
+| hello  | world | (pid:35191) |        |             |       |             |
+| hello, | I     | am          | parent | of          | 35192 | (pid:35191) |
+| hello  | world | (pid:35191) |        |             |       |             |
+| hello, | I     | am          | child  | (pid:35192) |       |             |
+
+  exact copy of the calling process. To the OS, there are two same programs is running.
+- the exec() system call
+  run different program(e.g. call /wc/ command in exec())
+- the wait() system call
+  
+*** Process Creation: A Little More Detail                           :ATTACH:
+
+[[attachment:clipboard-20260607T155546.png]]
+
+How does the OS get a program up and running?
+
+The first thing that OS must load its code and any static data(e.g. initialized variables) into memory, into the address space of the process.
+
+Once the code and data are loaded into memory, there are a few other things the OS needs to do before running the process.
+- allocated run-time stack
+- allocated heap for data explicitly request dynamically-allocated
+- related to I/O setup
+
+In early OSes, they load process is done eagerly. Now modern OSes perform the process lazily i.e., by loading pieces of code or data only as they needed during program
+
+To truly understand how lazy loading of pieces of code and data, we have to understand more about the *pagin* and *swapping*(virtualization of memory)
+
+Summary,before running anything, the OS clearly must do some work to get the important program bits from disk into memory
+*** Process States                                                   :ATTACH:
+:PROPERTIES:
+:ID:       c5dad7c5-80d7-4fa0-845b-c19e3846ac21
+:ROAM_ALIASES: Process States
+:END:
+- Running
+- Ready
+- Blocked
+[[attachment:clipboard-20260607T163538.png]]
+*** Data Structures
+The OS need to track all of running program information using Data Structures(e.g. Link Table, HashMap, Queue)
+
+** Mechanism: Limited Direct Execution
+There are a few challenges
+- The first is /performance/
+- The second is /control/
