@@ -137,3 +137,24 @@ The OS need to track all of running program information using Data Structures(e.
 There are a few challenges
 - The first is /performance/
 - The second is /control/
+
+*** Solution
+1. Restricted Operations
+#+begin_quote
+Direct execution has obvious advantage of being fast; the program run natively on hardware CPU. But there are a few problems of privilege if directly execute the program e.g. access any resources which is CPU or MEMORY,RESIGTER and so forth
+#+end_quote
+
+What approach OS has taken to isolate users and hardware
+- user mode
+  when running in the user mode, the process can't issue I/O request or allocate memory so forth. If doing so, the OS would then likely kill the process
+- kernel mode(OS or kernel run in)
+  In this mode, code that run can do what it likes, e.g. issue I/O requests and execute all types of restricted instructions, any operations needed privilege so forth
+
+How to execute privileged operations by users mode
+- Trap Instruction
+  To execute a system call, the program must execute *trap* instruction. it simultaneously jumps to into the kernel and raises privilege level to kernel mode. Then the process can run any privilege operation was needed. while running end, the OS calls return-from-trap instruction, returns into the calling user program while simultaneously reduces the privilege level back to user mode
+
+
+#+begin_quote
+why system calls look like procedure calls? In C Programming,the C standard libraries have hidden many details for system calls(e.g. like open() or any of system calls provided).
+#+end_quote
