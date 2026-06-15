@@ -138,7 +138,10 @@ There are a few challenges
 - The first is /performance/
 - The second is /control/
 
-*** Solution
+*** Solution                                                         :ATTACH:
+:PROPERTIES:
+:ID:       8d000676-3861-4688-8425-a1f60280ee5b
+:END:
 1. Restricted Operations
 #+begin_quote
 Direct execution has obvious advantage of being fast; the program run natively on hardware CPU. But there are a few problems of privilege if directly execute the program e.g. access any resources which is CPU or MEMORY,RESIGTER and so forth
@@ -154,7 +157,18 @@ How to execute privileged operations by users mode
 - Trap Instruction
   To execute a system call, the program must execute *trap* instruction. it simultaneously jumps to into the kernel and raises privilege level to kernel mode. Then the process can run any privilege operation was needed. while running end, the OS calls return-from-trap instruction, returns into the calling user program while simultaneously reduces the privilege level back to user mode
 
-
 #+begin_quote
 why system calls look like procedure calls? In C Programming,the C standard libraries have hidden many details for system calls(e.g. like open() or any of system calls provided).
 #+end_quote
+But we need a method to let the kernel jump into specify address(e.g. the process address of kernel stack), otherwise, anywhere of kernel the code jump into is a bad idea arbitrary
+- Trap Table
+  It is initialized by kernel at boot time. the table is likely a search table when the program execute system call.
+#+begin_quote
+There are other situations for Trap Table.
+- *Exceptions* were triggered by CPU hardware when programs crash(e.g. Page Fault, invalid instructions)
+- *Interrupt* were triggered external hardwares(e.g. mouse moving, receive data by net card, timer trigger)
+#+end_quote
+if only one of the situations above is triggerd, the trap handler program will handle it
+
+[[attachment:clipboard-20260615T173537.png]]
+/*timeline for trap table set up*/
