@@ -172,3 +172,27 @@ if only one of the situations above is triggerd, the trap handler program will h
 
 [[attachment:clipboard-20260615T173537.png]]
 /*timeline for trap table set up*/
+
+2. Switcing Between Context
+   The OS need to decide which process to start and stop another when it suffer from trap. If process runs exclusively, the OS can't switch to run other processes.
+- a cooperative approach: wait for system calls
+- a non-cooperative approach: the OS takes control
+- saving and restoring context
+
+** scheduling
+1. Workload Assumptions
+a. Each job runs for the same amount of time.
+b. All jobs arrive at the same time.
+c. Once started, each job runs to completion.
+e. The run-time of each job is known.
+d. All jobs only use the CPU (i.e., they perform no I/O)
+
+2. Scheduling Metrics
+\[T_{turnaround} = T_{complete} - T_{arrival}\]
+- the \(T_{arrival} \) indicate the time process arrival on cpu with running
+- the \(T_{complete}\) is time process have done on CPU
+
+there are two metrics for sheduling, one of turnaround time is *performance*, the other one is *fairness*
+
+3. First In, First Out
+   
