@@ -180,6 +180,10 @@ if only one of the situations above is triggerd, the trap handler program will h
 - saving and restoring context
 
 ** scheduling
+:PROPERTIES:
+:ID:       f1e13995-ffc0-4418-bd40-0bfec1d520f2
+:ROAM_ALIASES: scheduling
+:END:
 1. Workload Assumptions
 a. Each job runs for the same amount of time.
 b. All jobs arrive at the same time.
@@ -189,10 +193,74 @@ d. All jobs only use the CPU (i.e., they perform no I/O)
 
 2. Scheduling Metrics
 \[T_{turnaround} = T_{complete} - T_{arrival}\]
-- the \(T_{arrival} \) indicate the time process arrival on cpu with running
+- the \(T_{arrival} \) indicate the time process arrival in the system
 - the \(T_{complete}\) is time process have done on CPU
-
+#+begin_quote
+assume all jobs arrived at same time, hence \(T_{arrival} = 0 \)
+#+end_quote
 there are two metrics for sheduling, one of turnaround time is *performance*, the other one is *fairness*
 
-3. First In, First Out
-   
+3. First In, First Out(or First Come, First Served)
+   Just like the Queue of datastruct, consequently the job arrived first and running on CPU first
+- average turnaround time
+  assuming there are three jobs—A,B and C, each of jobs runs 10 seconds
+\begin{equation}
+\label{eq:2}
+\frac{10+20+30}{3} = 20
+\end{equation}
+
+But if the job in front of scheduling queue is heavyweight resource consumer, the other jobs of relatively-short resource get queued behind it. This cause convey effect[fn:1]
+Just like, assuming Job A runs for the full 100 seconds before B and C
+| Job | Turnaround | priority |
+| A   | 100s       |        1 |
+| B   | 110s       |        2 |
+| C   | 120s       |        3 |
+
+- average turnaround time (aforementioned \(T_{arrival} = 0 \))
+
+  \[\frac{100+110+120}{3} = 110 \]
+
+--------------
+[fn:1] *convey effect*:  the process of CPU-bound or heavyweight resource to consume runs exclusively on CPU. otherwise, there are a pile of processes need light resource to consume behind the heavy process
+
+4. Shortest Job First
+   It turn out a approach solve this problem, then the Queue will be
+| Job | Turnaround | priority |
+| B   | 10s        |        1 |
+| C   | 20s        |        2 |
+| A   | 120s       |        3 |
+
+- average turnaroud time(aforementioned \(T_{arrival} = 0 \))
+\[\frac{10+20+120}{3} = 50 \]
+
+#+begin_quote
+In the old days of batch computing, a number of non-preemptive schedulers were developed. Virtually all modern scheders are preemptive, stop one process from running in order to run another; in particular, the scheduler can perform *context switch*, stopping temporarily process is running and resuming(or starting) another
+#+end_quote
+
+before, we assumed the \(T_{arrival}\) equal 0. Now illustrating the other example. This time, Assume A arrives at \(t = 0 \) and needs to run for 100 seconds, whereas B and C arrive at \(t = 10\) and each need to run for 10 seconds. With pure SJF, it seen in
+
+#+DOWNLOADED: screenshot @ 2026-06-17 14:38:39
+[[file:images/2026-06-17_14-38-39_screenshot.png]]
+In particular, the Job B and C are forced to wait until Job A has completed. This looks like non-preemptive scheduler
+- average turnaround time
+  | Job | Turnaround | priority |
+  | A   |      100-0 |        1 |
+  | B   |     110-10 |        2 |
+  | C   |     120-10 |        3 |
+
+  \[\frac{100+100+110}{3} = 103.33 \]
+
+5. Shortest Time-to-Completion First
+   To address this concern, it can *preemt* job A with aforementioned acknowledge about *context switching* and *timer interrupts*. Just add preemption to SJF as the *Shortest Time-to-Completion First* or *Preemptive Shortest Job First* scheduler. With STCS in previous conditions, it seems in
+ 
+#+DOWNLOADED: screenshot @ 2026-06-17 15:18:38
+[[file:images/2026-06-17_15-18-38_screenshot.png]]
+
+  | Job | Turnaround | priority |
+  | A   |      120-0 | 1 » 3    |
+  | B   |      20-10 | 2 » 1    |
+  | C   |      30-10 | 3 » 2    |
+
+- average turnaround time
+
+\[\frac{(120-0)+(20-10)+(30-10)}{3} = 50 \]
