@@ -96,6 +96,10 @@ while all nodes points left node or right node, which is a link
 
 
 ** AVL Tree
+Base on Binary Search Tree, the data must be orderly before into AVL Tree
+- Node for balance factor, if the node height that left-subtree height minus right-subtree height is absolutely 1;thus the tree base on the node is balance
+- Null Node for balance factor equal 0
+
 
 
 ** Heap
