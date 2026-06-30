@@ -9,31 +9,11 @@ struct TreeNode{
   int val;
   TreeNode *lnode = nullptr;
   TreeNode *rnode = nullptr;
-  int height;
+  int height = 0;
   TreeNode(int x):val(x){};
 };
 
-TreeNode* rightRotation(TreeNode *cur_node) {
-  if (cur_node->lnode) {
-    TreeNode *child_node = cur_node->lnode;
-    cur_node->lnode = nullptr;
-    child_node->rnode = cur_node;
-    return child_node;
-  };
-  return nullptr;
-}
-
-//calculate the balance factor from the root node
-int _balance_factor(TreeNode *cur_node) {
-  if (cur_node == nullptr) {
-    return -2;
-  }
-
-  int l_child_h = cur_node->lnode ? cur_node->lnode->height + 1 : -1;
-  int r_child_h = cur_node->rnode ? cur_node->rnode->height + 1 : -1;
-
-  return l_child_h - r_child_h;
-}
+static std::deque<TreeNode*> parents;
 
 void update_height(TreeNode* root){
   if (root == nullptr) {
@@ -44,24 +24,52 @@ void update_height(TreeNode* root){
   root->height = std::max(left_child_h , right_child_h) + 1 ;
 }
 
+TreeNode* rightRotation(TreeNode *cur_node) {
+  TreeNode *child_node = cur_node->lnode;
+  TreeNode *grand_child = child_node->rnode;
+  child_node->rnode = cur_node;
+  cur_node->lnode = grand_child;
+  return child_node;
+}
+
+//calculate the balance factor from the root node
+int _balance_factor(TreeNode *cur_node) {
+  if (cur_node == nullptr) {
+    return -1;
+  }
+
+  int l_child_h = cur_node->lnode ? cur_node->lnode->height +1 : 0;
+  int r_child_h = cur_node->rnode ? cur_node->rnode->height +1 : 0;
+
+  return l_child_h - r_child_h;
+}
+
+// balance the root of tree
+void balance_tree(std::vector<TreeNode*>parents) {
+  for (TreeNode* &node : parents) {
+    if (_balance_factor(node) > 1) {
+        std::cout << node->val <<std::endl;
+    }    
+  }
+}
 
 //insert node and keep balance
 void insert(TreeNode *root,int x) {
   TreeNode *node = new TreeNode(x);
-  std::list<TreeNode*> parents;
+  parents.clear();
   while (true) {
     int mode = x < root->val ? 0 : 1;
     if (root == nullptr) {
       return;
     };
- 
+   
     if (x < root->val && root->lnode == nullptr) {
       root->lnode = node;
-      update_height(root);
+      parents.push_front(root);
       break;
     } else if(x > root->val && root->rnode == nullptr){
       root->rnode = node;
-      update_height(root);
+      parents.push_front(root);
       break;      
     } else if(mode == 0){
       parents.push_front(root);
@@ -70,15 +78,8 @@ void insert(TreeNode *root,int x) {
       parents.push_front(root);
       root = root->rnode;
     }
-  }
-  for (TreeNode* &node : parents) {
-    update_height(node);
-  }
-  for (TreeNode* &node : parents) {
-    if (_balance_factor(node) > 1) {
-      node->lnode = rightRotation(node);
-    }    
-  }
+  };
+
 }
 
 std::vector<TreeNode*> BFS(TreeNode *root){
@@ -103,8 +104,28 @@ int main() {
   TreeNode *root = new TreeNode(5);
   insert(root, 3);
   insert(root, 2);
+  insert(root,1);
+  for (TreeNode* &node : parents) {
+    update_height(node);
+  }
+  for (TreeNode* &node : parents) {
+    if (_balance_factor(node) > 1) {
+      node = rightRotation(node);
+    }
+  }
+
+//  for (int i =0 ; i<=parents.size();i++) {
+//reeNode *non_balance_node = parents[i];
+//reeNode *father_non_balance_node = parents[i+1] ? parents[i+1] : nullptr;
+//f (_balance_factor(non_balance_node) > 1) {
+// TreeNode* child_node = non_balance_node->lnode;
+// child_node = rightRotation(non_balance_node);
+// father_non_balance_node->lnode = child_node;
+// std::cout << "non-balance:" << non_balance_node->val << "height:" << non_balance_node->height << "factor:" << _balance_factor(non_balance_node)  << "\n" ;     
+//
+//  };
   auto r = BFS(root);
-  for (TreeNode* node : r) {
+  for (TreeNode* &node : r) {
     std::cout << node->val << ";height: " << node->height << "\n" ;
   };
   return 0;    
