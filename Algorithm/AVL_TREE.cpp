@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <iostream>
-#include <list>
 #include <ostream>
 #include <queue>
 #include <vector>
@@ -29,6 +28,8 @@ TreeNode* rightRotation(TreeNode *cur_node) {
   TreeNode *grand_child = child_node->rnode;
   child_node->rnode = cur_node;
   cur_node->lnode = grand_child;
+  update_height(cur_node);
+  update_height(child_node);
   return child_node;
 }
 
@@ -62,20 +63,20 @@ void insert(TreeNode *root,int x) {
     if (root == nullptr) {
       return;
     };
-   
+    parents.push_front(root);
     if (x < root->val && root->lnode == nullptr) {
       root->lnode = node;
-      parents.push_front(root);
+      //      parents.push_front(root);
       break;
     } else if(x > root->val && root->rnode == nullptr){
       root->rnode = node;
-      parents.push_front(root);
+      //      parents.push_front(root);
       break;      
     } else if(mode == 0){
-      parents.push_front(root);
+      //      parents.push_front(root);
       root = root->lnode;
     } else {
-      parents.push_front(root);
+      //      parents.push_front(root);
       root = root->rnode;
     }
   };
@@ -108,22 +109,28 @@ int main() {
   for (TreeNode* &node : parents) {
     update_height(node);
   }
+  std::deque<TreeNode *> parent_nodes;
+  
   for (TreeNode* &node : parents) {
     if (_balance_factor(node) > 1) {
-      node = rightRotation(node);
+      parent_nodes.push_back(node);
     }
   }
-
-//  for (int i =0 ; i<=parents.size();i++) {
-//reeNode *non_balance_node = parents[i];
-//reeNode *father_non_balance_node = parents[i+1] ? parents[i+1] : nullptr;
-//f (_balance_factor(non_balance_node) > 1) {
-// TreeNode* child_node = non_balance_node->lnode;
-// child_node = rightRotation(non_balance_node);
-// father_non_balance_node->lnode = child_node;
-// std::cout << "non-balance:" << non_balance_node->val << "height:" << non_balance_node->height << "factor:" << _balance_factor(non_balance_node)  << "\n" ;     
-//
-//  };
+  
+  for (int i =0 ; i < parent_nodes.size();i++) {
+    TreeNode *non_balance_node = parent_nodes[i];
+    TreeNode *father_non_balance_node = (i +1 <parent_nodes.size()) ? parent_nodes[i+1] : nullptr;
+    if (father_non_balance_node) {
+      father_non_balance_node->lnode = rightRotation(non_balance_node);
+//std::cout << "non-balance:"<< non_balance_node->val;
+//std::cout << "height:" << non_balance_node->height;
+//std::cout << "father:"<< father_non_balance_node->val;
+//std::cout << "factor:" << _balance_factor(non_balance_node)  << "\n" ;
+    }else{;
+      non_balance_node = rightRotation(non_balance_node);
+      root = non_balance_node;
+    }
+  }
   auto r = BFS(root);
   for (TreeNode* &node : r) {
     std::cout << node->val << ";height: " << node->height << "\n" ;

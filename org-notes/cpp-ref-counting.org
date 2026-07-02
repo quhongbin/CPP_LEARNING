@@ -1,9 +1,6 @@
 #+title: Reference Counting
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-:PROPERTIES:
-:ID:       d0d448fe-484e-49a2-9c29-aa7d34343744
-:END:
 
 * Reference Counting
 
@@ -12,10 +9,6 @@ Reference counting is a deterministic memory management technique where each hea
 This stands in contrast to tracing garbage collection (Java, C#, Go), where objects accumulate until a GC cycle scans the heap to identify unreachable objects. Reference counting gives you predictable, immediate cleanup — no GC pauses, no finalizers running at unpredictable times — at the cost of per-operation overhead and the fundamental problem of cycles.
 
 ** How It Works
-:PROPERTIES:
-:ROAM_ALIASES: reference-count
-:ID:       2db6f8b3-78c3-48ea-a6a0-31ebb625f7f8
-:END:
 
 The algorithm is simple but its correctness depends on careful implementation of increment and decrement at every reference boundary:
 
@@ -27,10 +20,6 @@ The algorithm is simple but its correctness depends on careful implementation of
 The critical invariant: the counter must exactly equal the number of live references at all times. A missing increment → premature deletion (use-after-free). A missing decrement → memory leak. Both are catastrophic in different ways.
 
 ** Where It Is Used
-:PROPERTIES:
-:ROAM_ALIASES: shared_ptr Ref
-:ID:       4858ec02-2ff5-4acd-8b0a-86e60821220c
-:END:
 
 Reference counting is pervasive across systems programming and game engines:
 
@@ -42,10 +31,6 @@ Reference counting is pervasive across systems programming and game engines:
 - *Linux kernel* — ~kref~ (kernel reference counting) for shared kernel objects like ~struct file~ and ~struct net_device~.
 
 ** Atomic Reference Counting and Thread Safety
-:PROPERTIES:
-:ROAM_ALIASES: atomic thread-safety
-:ID:       b1f885bc-3e78-420f-becb-2881a5dc32ce
-:END:
 
 When multiple threads share a ~shared_ptr~, increments and decrements on the reference counter must be *atomic* to avoid data races. ~std::shared_ptr~ guarantees this: the control block's counters use ~std::atomic<int>~ (or equivalent) with ~memory_order_relaxed~ for increments and ~memory_order_acq_rel~ for decrements.
 
@@ -75,10 +60,6 @@ This is why ~shared_ptr~ has a measurable cost compared to ~unique_ptr~ — atom
 Godot's ~Ref<T>~ is a noted exception: it uses non-atomic reference counting for performance. This makes ~Ref<T>~ *not thread-safe* — sharing a ~Ref<T>~ across threads requires external synchronization.
 
 ** Control Block Layout in shared_ptr
-:PROPERTIES:
-:ROAM_ALIASES: control-block weak-count
-:ID:       b3cce717-7faf-4b62-b773-fd3a983a2668
-:END:
 
 The control block is the hidden heap allocation that enables non-intrusive reference counting for ~shared_ptr~. Its layout (simplified):
 
@@ -96,10 +77,6 @@ The weak count is always ≥ the number of ~weak_ptr~ instances. When the strong
 When you use ~std::make_shared<T>(args...)~, the object and control block are allocated together in a single contiguous block — one heap allocation instead of two. This improves cache locality and reduces allocation overhead, but it means the object's memory cannot be freed until all ~weak_ptr~s are also gone (the control block and object share the same allocation).
 
 ** Intrusive vs Non-Intrusive Reference Counting
-:PROPERTIES:
-:ROAM_ALIASES: intrusive non-intrusive
-:ID:       e56e21b6-b72c-41e3-ae94-4d2c0bf1ce79
-:END:
 
 | Property         | Non-Intrusive (~shared_ptr~)      | Intrusive (~Ref<T>~, COM, Linux kref) |
 |------------------|-----------------------------------|----------------------------------------|
@@ -113,10 +90,6 @@ When you use ~std::make_shared<T>(args...)~, the object and control block are al
 Intrusive counting (Godot's ~RefCounted~) is lighter weight — no separate control block allocation, no double indirection — but it requires buy-in from the type system. You cannot retroactively make a ~std::string~ ref-counted with an intrusive scheme. Non-intrusive counting (~shared_ptr~) works with any type, including fundamental types like ~int~, but carries the double-pointer and separate-allocation overhead.
 
 ** Deferred Reclamation and Hazard Pointers
-:PROPERTIES:
-:ROAM_ALIASES: RCU hazard-pointer
-:ID:       d2e13f89-a3bd-4eca-a043-ea6d7392bda5
-:END:
 
 Reference counting has a fundamental scalability problem: every copy and destruction of a ~shared_ptr~ touches globally shared atomic variables, causing cache-line contention across cores. For high-throughput systems (databases, network stacks), this contention can dominate performance.
 
@@ -128,10 +101,6 @@ Advanced techniques address this:
 - *~std::atomic_shared_ptr<T>~ (C++20)* — allows atomic load/store/exchange on shared_ptr, enabling lock-free data structures that share ownership.
 
 ** Circular Reference Problem
-:PROPERTIES:
-:ROAM_ALIASES: circular-reference
-:ID:       1f6989ed-6db4-4a66-8fa5-e27669d597ab
-:END:
 
 The fundamental limitation of reference counting: if A holds a ~shared_ptr~ to B and B holds a ~shared_ptr~ back to A, neither counter can ever reach zero, even if no external code references either object. This is a *memory leak*, not a crash — the objects simply live forever.
 

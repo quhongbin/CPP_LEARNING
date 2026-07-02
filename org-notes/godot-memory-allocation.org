@@ -1,19 +1,12 @@
 #+title: Godot Memory Allocation
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-:PROPERTIES:
-:ID:       626f859e-309a-435d-b031-3a6e33c18bdb
-:END:
 
 * Godot Memory Allocation
 
 Godot provides its own memory allocation system in ~memory.h~ and ~memory.cpp~. It wraps ~malloc~ and ~calloc~ with additional debugging features.
 
 ** Memory::alloc_static
-:PROPERTIES:
-:ROAM_ALIASES: template allocator
-:ID:       e7526e73-7174-40b8-aaa4-52d15949c24d
-:END:
 
 This template function is the core allocator. It accepts a boolean template parameter ~p_ensure_zero~.
 
@@ -23,10 +16,6 @@ void *Memory::alloc_static(size_t p_bytes, bool p_pad_align)
 #+end_src
 
 ** Key Features
-:PROPERTIES:
-:ROAM_ALIASES: padding alignment
-:ID:       b9c32c3d-e314-4596-ae2d-721c043c02d0
-:END:
 
 1. **Zero-fill option** — If ~p_ensure_zero~ is ~true~, it uses ~calloc~ (zero-initialized). Otherwise ~malloc~.
 2. **Padding / Alignment** — When ~p_pad_align~ is ~true~ (or always in debug mode), it adds ~DATA_OFFSET~ extra bytes before the actual data. This stores the allocation size.
@@ -35,10 +24,6 @@ void *Memory::alloc_static(size_t p_bytes, bool p_pad_align)
 5. **Debug stats** — In debug mode, ~_current_mem_usage~ and ~_max_mem_usage~ track total memory.
 
 ** Memory Layout
-:PROPERTIES:
-:ROAM_ALIASES: memory-layout
-:ID:       502cc2ce-405f-4037-a398-025f69f5b946
-:END:
 
 ```
 | SIZE_OFFSET | DATA_OFFSET |

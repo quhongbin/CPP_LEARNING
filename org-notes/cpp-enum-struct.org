@@ -1,19 +1,14 @@
 #+title: C++ Enum vs Struct Class
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-:PROPERTIES:
-:ID:       2ae84663-9f28-426d-a4eb-a8ffebae71b2
-:END:
-
+#+hugo_base_dir: ~/Obsidian/hugo_blog/
+#+hugo_section: org-notes
+#+hugo_front_matter_format: yaml
 * C++ Enum vs Struct Class
 
 ~enum~ and ~struct~ are both user-defined types in C++, but they serve fundamentally different roles: ~enum~ defines a set of named constants (values), while ~struct~ defines a compound data type (a bundle of data members). Understanding both — and their modern variants — is essential for writing clear, type-safe C++.
 
 ** Enum
-:PROPERTIES:
-:ROAM_ALIASES: enum-class
-:ID:       475a96c3-1652-41b8-9b64-b8b86e0cdb41
-:END:
 
 An ~enum~ (enumeration) is a distinct type whose values are restricted to a set of named constants. C++ has two enum forms:
 
@@ -27,10 +22,6 @@ Plain enums are legacy from C and have significant drawbacks: their enumerators 
 ~enum class~ (scoped enumeration) fixes both issues: enumerators are accessed with the scope operator (~Direction::UP~), and there is no implicit conversion to ~int~.
 
 ** Struct
-:PROPERTIES:
-:ROAM_ALIASES: struct class
-:ID:       dbdf8d91-f568-4e83-a219-228998ae6e6e
-:END:
 
 A ~struct~ (structure) groups related data members into a single compound type. In C++, ~struct~ and ~class~ are nearly identical — the only difference is that ~struct~ members are ~public~ by default, while ~class~ members are ~private~ by default.
 
@@ -51,10 +42,6 @@ public:
 The convention in most C++ codebases: use ~struct~ for passive data holders (PODs, aggregates, value types) and ~class~ for types with invariants, private state, and behavior. This is a convention only — the compiler treats them identically after access specifiers are resolved.
 
 ** Plain Enum vs Enum Class
-:PROPERTIES:
-:ROAM_ALIASES: scoped-enum
-:ID:       a0f24bc9-3ba2-4010-8e87-ce828bedf66d
-:END:
 
 | Feature                | ~enum~ (plain)            | ~enum class~ (scoped)     |
 |------------------------|---------------------------|---------------------------|
@@ -68,10 +55,6 @@ The convention in most C++ codebases: use ~struct~ for passive data holders (POD
 The scoping and type-safety improvements are so significant that most C++ style guides (Google, LLVM, C++ Core Guidelines) recommend always using ~enum class~ unless C compatibility is required.
 
 ** Enum Underlying Type and std::underlying_type
-:PROPERTIES:
-:ROAM_ALIASES: underlying_type fixed-width
-:ID:       c3ba4637-c2f1-472d-9f7c-e54934325637
-:END:
 
 Both ~enum~ and ~enum class~ allow specifying the underlying integer type explicitly. This is critical for ABI stability (the enum's size becomes part of the interface) and for serialization (you know the exact byte layout):
 
@@ -102,10 +85,6 @@ auto val = to_underlying(Permission::READ);  // val = 1 (uint8_t)
 #+end_src
 
 ** Enum as Bitmask / Flags Pattern
-:PROPERTIES:
-:ROAM_ALIASES: bitmask bitwise
-:ID:       dd8fc764-9eb8-42b8-81de-58851f55888d
-:END:
 
 When an enum represents bit flags (each value is a power of 2), you can combine them with bitwise operators — but you must overload those operators manually for ~enum class~:
 
@@ -142,10 +121,6 @@ if (hasFlag(mode, FileMode::Read)) { /* ... */ }
 This pattern is used extensively in Godot (e.g., ~MethodFlags~, ~PropertyUsageFlags~), Windows API (~FILE_ATTRIBUTE_*~, ~GENERIC_READ | GENERIC_WRITE~), and almost every C API that accepts flag combinations.
 
 ** Struct Padding, Alignment, and Reordering
-:PROPERTIES:
-:ROAM_ALIASES: padding alignment
-:ID:       3096b46d-decd-48c7-a4ed-5c12be0e0706
-:END:
 
 The compiler inserts *padding bytes* between struct members to satisfy alignment requirements. This means the size of a struct is not simply the sum of its members' sizes — and the order of members affects the total size:
 
@@ -176,10 +151,6 @@ Key alignment rules:
 C++11 added ~alignof(T)~ and ~alignas(N)~ for explicit alignment queries and requirements. You can use ~alignas~ to force cache-line alignment (prevents false sharing in multi-threaded code) or to satisfy hardware requirements (SIMD types often require 16- or 32-byte alignment).
 
 ** Designated Initializers (C++20)
-:PROPERTIES:
-:ROAM_ALIASES: designated-initializer aggregate
-:ID:       712f4075-d5bb-4a6c-99f9-118af0e90412
-:END:
 
 C++20 introduced *designated initializers*, allowing you to initialize struct (aggregate) members by name, skipping defaults and improving readability:
 
@@ -206,10 +177,6 @@ WindowConfig cfg2 = {800, 600, "My App", true, 0.8};  // fragile, easy to reorde
 C++ designated initializers have a key restriction compared to C: members must be initialized in declaration order. This prevents ambiguities but means you cannot reorder the designators arbitrarily.
 
 ** Union — Shared Memory, Type Punning, std::variant
-:PROPERTIES:
-:ROAM_ALIASES: union variant
-:ID:       689db611-364c-4647-81e4-be98eccce0af
-:END:
 
 A ~union~ is a special struct-like type where all members share the same memory — at any given time, only one member (the "active member") is valid:
 
@@ -245,17 +212,5 @@ std::visit([](auto&& arg) {
 ~std::variant~ compiles to essentially the same layout as a hand-written tagged union (~sizeof(variant) = sizeof(largest type) + sizeof(tag) + padding~) but provides full type safety. Prefer ~std::variant~ over raw ~union~ in modern C++.
 
 ** Recommendation
-:PROPERTIES:
-:ROAM_ALIASES: type-safety
-:ID:       ea0206de-791b-467b-bb5b-d8704607d4c6
-:END:
 
 Always prefer ~enum class~ over plain ~enum~ in modern C++. It avoids name clashes, prevents implicit int conversion bugs, and integrates better with the type system. Similarly, prefer ~std::variant~ over raw ~union~ for tagged union use cases. Use ~struct~ for simple data aggregates and ~class~ for types with invariants and behavior — this is a strong convention that makes code intent clear at a glance.
-
-** Related Notes
-
-- [[id:608ddcb6-9345-4cee-9aae-9dc1c2783338][C++ Templates]] — enums can be used as non-type template parameters; template metaprogramming frequently inspects enum values
-- [[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]] — structs are the typical data unit managed by smart pointers
-- [[id:d90d89de-f807-4187-a9f7-a1501e9dcda5][C++ Memory Management]] — struct layout, alignment, and padding directly impact memory usage and cache performance
-- [[id:470066fc-cee3-48da-a217-9abc41c4818d][C++ Function Pointers]] — enums are often used as selector codes passed to function-pointer-based dispatch tables
-- [[id:f5899ea2-320f-4845-8ed3-68b68ba1cdcd][Copy Constructors]] — structs with raw pointers need custom copy constructors (Rule of Three)
