@@ -32,9 +32,7 @@
    - all of nodes have two child nodes expect leaf nodes
 4. balanced binary tree
    - assume \(d\) is Height difference of any node that left child-tree height subtract right child-tree height satisfy \(\lvert d \rvert \le 1\)
-
 ** Binary Tree Degradation
-
 while all nodes points left node or right node, which is a link
 
 ** Binary Tree traversal                                             :ATTACH:
@@ -99,7 +97,6 @@ while all nodes points left node or right node, which is a link
 Base on Binary Search Tree, the data must be orderly before into AVL Tree
 - Node for balance factor, if the node height that left-subtree height minus right-subtree height is absolutely 1;thus the tree base on the node is balance
 - Null Node for balance factor equal 0
-
 
 
 ** Heap
