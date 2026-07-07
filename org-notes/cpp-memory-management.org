@@ -1,9 +1,6 @@
 #+title: C++ Memory Management
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-:PROPERTIES:
-:ID:       d90d89de-f807-4187-a9f7-a1501e9dcda5
-:END:
 
 * C++ Memory Management
 
@@ -12,10 +9,6 @@ C++ gives the programmer direct, fine-grained control over memory — where obje
 This note serves as the hub for all memory-related topics. Modern C++ (C++11 onward) provides tools — smart pointers, RAII, move semantics — that make manual memory management largely unnecessary for application code while preserving the low-level control for systems programming and game engines.
 
 ** Stack vs Heap — Detailed Comparison
-:PROPERTIES:
-:ROAM_ALIASES: stack heap
-:ID:       eba7d4cd-350a-4f9e-9e19-5630ee7e3eef
-:END:
 
 C++ objects can live in two fundamentally different memory regions:
 
@@ -44,10 +37,6 @@ General rule: *prefer stack allocation*. It is faster, safer, and automatic. Use
 - You need runtime polymorphism (storing derived objects in a base-class container).
 
 ** Memory Alignment and Padding
-:PROPERTIES:
-:ROAM_ALIASES: alignment padding
-:ID:       cebb3935-3316-4f6d-a970-c7c843e58c0a
-:END:
 
 Every C++ type has an *alignment requirement* — the address at which it must begin must be a multiple of its alignment. This exists because CPUs read memory in aligned chunks (typically 4, 8, 16, or 32 bytes), and misaligned access is either slower (x86) or a hard fault (ARM, SPARC).
 
@@ -77,10 +66,6 @@ alignas(64) char cache_line[64];  // force 64-byte alignment (prevents false sha
 Alignment matters for performance (cache-line alignment avoids false sharing in multi-threaded code) and for correctness when doing low-level memory work (casting ~void*~ to typed pointers — see [[id:dae30869-f9e6-43e5-b188-661d59b714c4][C++ void* Pointers]]).
 
 ** RAII — Resource Acquisition Is Initialization
-:PROPERTIES:
-:ROAM_ALIASES: RAII scope-guard
-:ID:       e5d6e1cd-3768-4188-bee0-cb49c293e856
-:END:
 
 RAII is the single most important idiom in C++. The core idea: *bind the lifetime of a resource to the lifetime of an object*. Acquire the resource in the constructor, release it in the destructor. The destructor is guaranteed to run when the object goes out of scope — whether by normal return, exception, or early return.
 
@@ -111,10 +96,6 @@ RAII applies to any resource, not just memory:
 Smart pointers ([[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]]) are the canonical RAII wrapper for heap memory: the pointer is the resource, the constructor takes ownership, the destructor calls ~delete~.
 
 ** Custom Allocators and Memory Pools
-:PROPERTIES:
-:ROAM_ALIASES: custom-allocator memory-pool
-:ID:       72192c3e-b963-4b67-88fd-ea27e88209c3
-:END:
 
 The default heap allocator (~malloc~/~new~) is a general-purpose solution that must handle arbitrary sizes, fragmentation, and multi-threading. For performance-critical code, *custom allocators* can dramatically outperform the general allocator by exploiting domain-specific allocation patterns:
 
@@ -127,10 +108,6 @@ The default heap allocator (~malloc~/~new~) is a general-purpose solution that m
 - *STL allocator adaptor*: all C++ standard containers accept a custom allocator via their template parameter. ~std::vector<int, MyAllocator<int>>~ will use your allocator for all its heap operations.
 
 ** Placement new and In-Place Construction
-:PROPERTIES:
-:ROAM_ALIASES: placement-new in-place
-:ID:       e5cbfc09-80a5-4349-bb40-3c4b53d72bb8
-:END:
 
 Placement ~new~ constructs an object at a specific memory address without allocating new memory. It is the fundamental building block of custom allocators, memory pools, and container implementations:
 
@@ -162,10 +139,6 @@ Standard containers use placement ~new~ internally: ~std::vector::emplace_back~ 
 - [[id:2ae84663-9f28-426d-a4eb-a8ffebae71b2][C++ Enum vs Struct Class]] — struct layout and alignment relate to memory layout and padding
 
 ** Key Rule
-:PROPERTIES:
-:ROAM_ALIASES: new delete
-:ID:       8562c33f-65f3-415a-b1a3-84fd811bf899
-:END:
 
 Always pair ~new~ with ~delete~ and ~malloc~ with ~free~. Never mix them (~new~ + ~free~, or ~malloc~ + ~delete~). In modern C++, avoid writing raw ~new~ and ~delete~ in application code entirely — use ~std::make_unique~, ~std::make_shared~, and standard containers (~std::vector~, ~std::string~, ~std::map~) which handle allocation and deallocation correctly by default.
 

@@ -1,10 +1,11 @@
+:PROPERTIES:
+:ID:       ae676c05-b77f-4307-87f4-47fb97e19f7f
+:END:
 #+title: C++ Templates
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-:PROPERTIES:
-:ID:       608ddcb6-9345-4cee-9aae-9dc1c2783338
-:END:
-
+#+HUGO_BASE_DIR: ~/Obsidian/hugo_blog/
+#+hugo_section: org-notes
 * C++ Templates
 
 Templates are C++'s mechanism for *generic programming* — writing code that works with any type without repeating yourself. Unlike runtime polymorphism (virtual functions), templates are resolved entirely at compile time: the compiler generates a separate copy of the function or class for each set of type arguments actually used. This is called *template instantiation*.
@@ -12,10 +13,6 @@ Templates are C++'s mechanism for *generic programming* — writing code that wo
 Templates are the foundation of the C++ Standard Library: ~std::vector<int>~, ~std::map<std::string, double>~, ~std::sort(begin, end)~ — all templates. They power everything from containers to algorithms to smart pointers. Understanding templates deeply means understanding how modern C++ achieves its combination of abstraction and zero-overhead performance.
 
 ** Basic Syntax
-:PROPERTIES:
-:ROAM_ALIASES: function-template
-:ID:       87686986-b6d3-4b26-80cb-991ed0951b47
-:END:
 
 A function template parameterizes a function over one or more types (or non-type values).
 
@@ -24,7 +21,7 @@ template <typename T>
 T max(T a, T b) {
     return (a > b) ? a : b;
 }
-
+n
 // Usage — the compiler deduces T from the argument types
 int    x = max(3, 5);       // T = int
 double y = max(3.14, 2.72); // T = double
@@ -60,10 +57,6 @@ Array<int, 100> buf;  // stack-allocated array of 100 ints
 #+end_src
 
 ** Templates in Godot
-:PROPERTIES:
-:ROAM_ALIASES: alloc_static bool
-:ID:       d49345ac-6b03-4217-ae9e-0c6f8843c952
-:END:
 
 Godot uses templates heavily throughout its core. A prime example is the memory allocation layer: ~Memory::alloc_static<true>(size)~ uses a ~bool~ template parameter to decide *at compile time* whether to zero-fill the allocated memory.
 
@@ -72,10 +65,6 @@ This compile-time dispatch means no runtime branch, no ~if~ check, no function-p
 Another critical Godot template is ~Ref<T>~ ([[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]]), which is a reference-counted smart pointer template. It only accepts classes derived from ~RefCounted~, enforced through template constraints.
 
 ** Template Specialization — Full and Partial
-:PROPERTIES:
-:ROAM_ALIASES: full-specialization partial-specialization
-:ID:       0bb3219c-ed4d-4b26-92ca-81c63896f542
-:END:
 
 You can provide a specialized implementation for specific types or families of types. *Full specialization* replaces the template entirely for one concrete type:
 
@@ -118,10 +107,6 @@ struct TypeName<std::vector<T>> {
 The compiler always picks the *most specialized* match. Partial specialization only works for class templates, not function templates (function templates use overloading instead).
 
 ** SFINAE and enable_if
-:PROPERTIES:
-:ROAM_ALIASES: SFINAE enable_if
-:ID:       5d6a4dab-601f-4574-a34c-aabd3ea525ec
-:END:
 
 SFINAE stands for "Substitution Failure Is Not An Error" — when the compiler tries to substitute template parameters and the substitution fails (e.g., a type doesn't have a required member), it does not produce an error. Instead, it simply removes that overload from consideration and tries the next one.
 
@@ -159,10 +144,6 @@ T divide(T a, T b) {
 SFINAE is still essential for controlling which template overloads exist — ~if constexpr~ can't remove an overload from the overload set, it can only branch inside a single instantiation.
 
 ** Variadic Templates and Parameter Packs
-:PROPERTIES:
-:ROAM_ALIASES: variadic-template parameter-pack
-:ID:       a09e1fe2-b087-41fb-a5c9-f11a867f29d0
-:END:
 
 C++11 introduced *variadic templates* — templates that accept an arbitrary number of type or value parameters. The syntax uses ~...~ (ellipsis) to denote a *parameter pack*:
 
@@ -194,10 +175,6 @@ auto total = sum(1, 2, 3, 4, 5);  // total = 15
 Variadic templates power ~std::tuple~, ~std::variant~, ~std::make_shared~, ~emplace_back~, and nearly every variadic function in the standard library. They eliminate the pre-C++11 practice of copy-pasting overloads for 1 arg, 2 args, 3 args, ... up to some arbitrary limit.
 
 ** C++20 Concepts
-:PROPERTIES:
-:ROAM_ALIASES: concept requires
-:ID:       dcf0767d-b882-4212-bf71-26fca4a2370b
-:END:
 
 C++20 *Concepts* are a major evolution of templates. They let you specify *requirements* on template parameters, producing readable error messages when a type doesn't satisfy those requirements — instead of pages of inscrutable template instantiation backtraces.
 
@@ -229,10 +206,6 @@ auto max(Comparable auto a, Comparable auto b) {
 Concepts subsume most use cases of SFINAE and ~enable_if~, providing clearer intent, better error messages, and faster compilation (the compiler can reject non-matching overloads earlier).
 
 ** Key Point
-:PROPERTIES:
-:ROAM_ALIASES: compile-time
-:ID:       41cb2e93-79f5-445a-8cb1-65f3320d9d3a
-:END:
 
 Templates execute entirely at compile time. Each unique set of template arguments produces a separate instantiation — separate machine code in the binary. This means:
 
@@ -240,12 +213,3 @@ Templates execute entirely at compile time. Each unique set of template argument
 - *Potentially larger binaries* — if you instantiate ~std::vector<int>~, ~std::vector<double>~, and ~std::vector<std::string>~, you get three copies of ~vector~'s code. This is called *code bloat*. In practice, modern linkers can fold identical instantiations (e.g., ~vector<int*>~ and ~vector<const int*>~ on some platforms).
 - *Longer compile times* — each instantiation requires the compiler to parse, type-check, and codegen the template body for each combination. Large template-heavy codebases (LLVM, Godot) can take minutes or hours to build.
 - *Error messages at instantiation, not definition* — if a template body contains an error that only surfaces for specific types (e.g., ~T::value~ when T is ~int~), the error only appears when you actually instantiate with ~int~. This makes debugging template errors notoriously difficult — a key motivation for C++20 Concepts.
-
-** Related Notes
-
-- [[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]] — Ref<T>, unique_ptr<T>, shared_ptr<T> are all class templates
-- [[id:dae30869-f9e6-43e5-b188-661d59b714c4][C++ void* Pointers]] — compile-time type erasure (templates) vs runtime type erasure (void*)
-- [[id:470066fc-cee3-48da-a217-9abc41c4818d][C++ Function Pointers]] — std::function is a class template; function pointer types can be template parameters
-- [[id:2ae84663-9f28-426d-a4eb-a8ffebae71b2][C++ Enum vs Struct Class]] — enums and structs work as template type parameters and non-type template arguments
-- [[id:d90d89de-f807-4187-a9f7-a1501e9dcda5][C++ Memory Management]] — custom allocators are templated on the type they allocate
-- [[id:f5899ea2-320f-4845-8ed3-68b68ba1cdcd][Copy Constructors]] — templates interact with copy semantics; template constructors are never copy constructors

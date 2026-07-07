@@ -1,22 +1,22 @@
-#+title: Class
-#+author: Hongbin Qu
-#+date: <2026-05-21 Thu>
+---
+author: Hongbin Qu
+date: \<2026-05-21 Thu\>
+title: Class
+---
 
-* virtual
+# virtual
 
-#+begin_quote
-This word is supplied for c++98 standard, decorate VIRTUAL with OVERRIDE and FINAL is C++11
-#+end_quote
+> This word is supplied for c++98 standard, decorate VIRTUAL with
+> OVERRIDE and FINAL is C++11
 
-Declare the function is a virtual function——allow derived class overwrite the virtual function
+Declare the function is a virtual function------allow derived class
+overwrite the virtual function
 
-#+begin_quote
-derived class own all members which is not private from base class
-#+end_quote
+> derived class own all members which is not private from base class
 
-** Runtime Polymorphism
+## Runtime Polymorphism {#6207fcdf-760b-49d2-a59d-10270118c8d2 roam_aliases="virtual-function"}
 
-#+begin_src cpp
+``` cpp
 #include <iostream>
 #include <string>
 
@@ -59,7 +59,7 @@ public:
       std::cout<<"Cat Constructor" <<std::endl;  
   }
     std::string speak() const override {
-    
+
       return "Meow!!!";
     }
     ~Cat(){
@@ -82,44 +82,31 @@ int main() {
     Dog dog;
     make_sound(dog);   // 输出 "Woof!"（实际调用 Dog::speak）
     return 0;
-    
+
 //    make_sound(cat);   // 输出 "Meow!"（实际调用 Cat::speak）
 }
-#+end_src
-#+RESULTS:
-| Animal  | Constructor    |
-| Dog     | Constructor    |
-| Cat     | Constructor    |
-| Cat     | Destructor     |
-| Dog     | Destructor     |
-| Animal  | Destructor     |
-| Demo    | con/destructor |
-| Animal  | Constructor    |
-| Dog     | Constructor    |
-| Woof!!! |                |
-| Dog     | Destructor     |
-| Animal  | Destructor     |
+```
 
-** const and override
-- const decorate the function which declare can't modify self-object members
-- override declare the function inherit the same function signature from base class, whether thrrow except
+## const and override {#6fc07006-6fff-4985-9076-162027acc55f roam_aliases="const override"}
 
-** construction and destruction
+-   const decorate the function which declare can\'t modify self-object
+    members
+-   override declare the function inherit the same function signature
+    from base class, whether thrrow except
 
-[[../Excalidraw/virtual_keyword.png]]
+## construction and destruction {#fe32b206-dc60-465c-a3c5-c0e147a19829 roam_aliases="virtual-destructor"}
 
-- if base class add virtual keyword for destructor function,
-  therefore all derived class for destructor implicitly own virtual attribute
-  
-** pure virtual function
+![](../Excalidraw/virtual_keyword.png)
 
+-   if base class add virtual keyword for destructor function, therefore
+    all derived class for destructor implicitly own virtual attribute
 
+## pure virtual function {#8536657d-e48c-47d6-b857-e47f4e19e58b roam_aliases="pure-virtual"}
 
-- it indicate the derived class must overwrite the pure virtual function from base class
+-   it indicate the derived class must overwrite the pure virtual
+    function from base class
 
-
-
-#+begin_src cpp
+``` cpp
 #include<iostream>
 using namespace std;
 class Shape {
@@ -140,6 +127,8 @@ int main() {
     s->draw(); // 输出 "Draw Circle"
     delete s;
 }
-#+end_src
+```
 
-: Draw Circle
+``` example
+Draw Circle
+```

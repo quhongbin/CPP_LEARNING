@@ -1,3 +1,6 @@
+:PROPERTIES:
+:ID:       1a03e445-c540-41e9-b473-3430cd8026be
+:END:
 #+title: BinaryTree
 
 * a non-linear data struct # Binary Tree
@@ -16,11 +19,6 @@
 | node height | the number of edges from maximum leaf node to current node       |
 
 ** The types of Binary Trees
-:PROPERTIES:
-:CUSTOM_ID: the-types-of-binary-trees
-:ID:       1a03e445-c540-41e9-b473-3430cd8026be
-:ROAM_ALIASES: "test"
-:END:
 1. perfect binary tree
    - all levels have filled
    - all of the leaf nodes' degrees is zero. The other nodes' degrees is 2
@@ -38,11 +36,6 @@ while all nodes points left node or right node, which is a link
 ** Binary Tree traversal                                             :ATTACH:
 :PROPERTIES:
 :ID:       47fe521c-a0f3-4721-939a-756cb7f05c02
-:END:
-
-:PROPERTIES:
-:CUSTOM_ID: binary-tree-traversal
-:ID:       5583576b-fdca-47db-a28b-d859924bbfc3
 :END:
 
 1. level-order traversal (level-by-level)
@@ -101,3 +94,5 @@ Base on Binary Search Tree, the data must be orderly before into AVL Tree
 
 ** Heap
 
+
+[[roam:thread]]

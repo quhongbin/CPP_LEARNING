@@ -1,9 +1,6 @@
 #+title: C++ Smart Pointers & Ref
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-:PROPERTIES:
-:ID:       1d07decd-4659-494a-835e-defca639a771
-:END:
 
 * C++ Smart Pointers & Ref
 
@@ -12,10 +9,6 @@ Smart pointers are RAII wrappers around raw pointers that automatically manage t
 They are not just convenience — they are the foundation of exception-safe C++. If an exception is thrown between a ~new~ and its matching ~delete~ in raw-pointer code, the object leaks. Smart pointers guarantee cleanup regardless of how a scope is exited (normal return, exception, early return).
 
 ** Types of Smart Pointers
-:PROPERTIES:
-:ROAM_ALIASES: shared_ptr unique_ptr
-:ID:       c889c53d-0b5e-4a0c-bce6-5c6d45bf5d30
-:END:
 
 C++11 introduced three core smart pointer types in ~<memory>~:
 
@@ -32,10 +25,6 @@ The choice between them is a design decision about ownership, not performance:
 - *If you need to observe without extending lifetime* → ~weak_ptr~. Always created from a ~shared_ptr~; does not keep the object alive.
 
 ** Godot Ref<T>
-:PROPERTIES:
-:ROAM_ALIASES: Ref RefCounted
-:ID:       92eb4642-2e78-4552-a97c-78a9aaa04ea3
-:END:
 
 Godot engine uses its own smart pointer template ~Ref<T>~ instead of ~std::shared_ptr<T>~. It works exclusively with classes that inherit from ~RefCounted~, which embeds the reference counter directly inside the object (intrusive reference counting — see [[id:d0d448fe-484e-49a2-9c29-aa7d34343744][Reference Counting]]).
 
@@ -45,10 +34,6 @@ The key difference from ~shared_ptr~:
 - ~Ref<T>~ is *not* thread-safe by default — reference count operations are not atomic.
 
 ** Custom Deleters with unique_ptr
-:PROPERTIES:
-:ROAM_ALIASES: custom-deleter unique_ptr
-:ID:       d0a97690-360f-448a-95ab-f2674adad229
-:END:
 
 ~unique_ptr~ accepts an optional *deleter* type as its second template parameter. By default it uses ~std::default_delete<T>~ which calls ~delete~, but you can replace it to handle non-standard resource cleanup:
 
@@ -68,10 +53,6 @@ std::unique_ptr<void, decltype(freeDeleter)> buf(malloc(1024), freeDeleter);
 This makes ~unique_ptr~ a universal RAII handle — not just for ~new~/~delete~, but for any resource with an allocate/release pair: file handles, sockets, GPU buffers, database connections.
 
 ** shared_ptr Control Block Internals
-:PROPERTIES:
-:ROAM_ALIASES: control-block make_shared
-:ID:       2a7d8360-0df5-4885-b599-09dbbfa52176
-:END:
 
 A ~shared_ptr<T>~ stores two pointers internally:
 1. A pointer to the managed object (the ~T*~ you see with ~.get()~)
@@ -86,10 +67,6 @@ The control block is created once — either by ~std::make_shared~ (which alloca
 Crucially, the *object* is destroyed when the strong count reaches zero, but the *control block itself* survives as long as there are weak pointers, because ~weak_ptr::lock()~ needs to check whether the object still exists by reading the strong count from the control block.
 
 ** weak_ptr::lock() and Observer Pattern
-:PROPERTIES:
-:ROAM_ALIASES: weak_ptr observer-pattern
-:ID:       7c4a2886-6bb1-4056-8068-1ea083a53449
-:END:
 
 ~weak_ptr<T>~ does not keep the object alive. To access the object, you must call ~.lock()~, which returns a ~shared_ptr<T>~:
 
@@ -111,10 +88,6 @@ This is the foundation of the *observer pattern without dangling pointers* — a
 ~.expired()~ checks whether the object is gone, but it has a TOCTOU (time-of-check-time-of-use) race in multi-threaded code — prefer ~.lock()~ directly.
 
 ** enable_shared_from_this
-:PROPERTIES:
-:ROAM_ALIASES: enable_shared_from_this shared_from_this
-:ID:       de3d52ca-17ee-4aeb-a0de-132f1ef7e8cc
-:END:
 
 A common pitfall: inside a member function, you have ~this~ — a raw pointer. If you create a ~shared_ptr~ from ~this~, you get a *second, independent control block*, leading to double-delete when both ~shared_ptr~ groups reach zero.
 
@@ -146,10 +119,6 @@ auto w2 = w->getShared();  // w2 shares the same control block as w
 ~enable_shared_from_this~ works by storing a ~weak_ptr~ inside the base class. The first ~shared_ptr~ that takes ownership of the object initializes this ~weak_ptr~. ~shared_from_this()~ calls ~weak_ptr::lock()~ to produce a ~shared_ptr~ that shares the existing control block. If called on an object not managed by ~shared_ptr~, it throws ~std::bad_weak_ptr~.
 
 ** make_unique / make_shared — Why Prefer Them
-:PROPERTIES:
-:ROAM_ALIASES: make_unique make_shared
-:ID:       bba643c2-62f5-4a05-b4ee-8ed2dabdb487
-:END:
 
 Always prefer ~std::make_unique<T>(args...)~ and ~std::make_shared<T>(args...)~ over raw ~new~:
 
@@ -174,10 +143,6 @@ Reasons:
 The one case where you *must* use raw ~new~ with ~shared_ptr~ is when you need a custom deleter — ~make_shared~ cannot accept one.
 
 ** Example
-:PROPERTIES:
-:ROAM_ALIASES: memnew Ref
-:ID:       a957eb1d-4c94-4245-a3f8-0a9eeb1d4c4d
-:END:
 
 #+begin_src cpp
 Ref<MyNode> node = memnew(MyNode);

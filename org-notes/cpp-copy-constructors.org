@@ -1,9 +1,6 @@
 #+title: Copy Constructors
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-:PROPERTIES:
-:ID:       f5899ea2-320f-4845-8ed3-68b68ba1cdcd
-:END:
 
 * Copy Constructors
 
@@ -12,10 +9,6 @@ A copy constructor creates a new object by copying the state of an existing obje
 Copy constructors are everywhere: passing by value, returning by value, initializing with ~=~, throwing exceptions. Getting them wrong leads to double-free, dangling pointers, or silent data corruption — some of the hardest bugs to diagnose.
 
 ** Syntax
-:PROPERTIES:
-:ROAM_ALIASES: copy-constructor
-:ID:       74b5c684-9514-4f71-b790-b1061d86f019
-:END:
 
 A copy constructor takes a const lvalue reference to its own type:
 
@@ -30,10 +23,6 @@ public:
 The parameter *must* be a reference. If it were by value, the compiler would need to copy the argument to pass it — calling the copy constructor — which would need to copy the argument — infinite recursion at compile time (caught as an error, not a runtime loop).
 
 ** When the Copy Constructor Is Called
-:PROPERTIES:
-:ROAM_ALIASES: copy-init
-:ID:       569dcdf2-e656-422a-9d9a-7e06f48901db
-:END:
 
 The copy constructor is invoked in these situations:
 
@@ -47,10 +36,6 @@ The copy constructor is invoked in these situations:
 Crucially, ~MyClass b = a;~ calls the copy constructor, *not* the copy assignment operator. This is a common point of confusion: initialization (creating a new object) uses constructors; assignment (modifying an existing object) uses ~operator=~.
 
 ** Default Copy Constructor
-:PROPERTIES:
-:ROAM_ALIASES: shallow-copy
-:ID:       7694c439-4e35-45c6-971a-f2cc0c952770
-:END:
 
 If you do not declare a copy constructor, the compiler generates one automatically. The default copy constructor performs a *memberwise copy* — it calls the copy constructor of each member (or performs a bitwise copy for fundamental types like ~int~, ~double~).
 
@@ -75,10 +60,6 @@ struct Dangerous {
 The default copy constructor is correct when all members are *value-semantic types* (~std::string~, ~std::vector~, ~int~, ~double~, smart pointers). It is dangerous when the class manages raw resources (raw pointers, file handles, sockets) — the copy only duplicates the handle, not the resource, leading to double-close or double-free.
 
 ** Rule of Three / Five
-:PROPERTIES:
-:ROAM_ALIASES: RuleOfThree move
-:ID:       7c62acd8-a2fe-49ac-9a41-30aff18810ee
-:END:
 
 The *Rule of Three*: if a class defines any one of the following, it almost certainly needs all three:
 1. Destructor
@@ -142,10 +123,6 @@ public:
 #+end_src
 
 ** Copy Elision — RVO and NRVO
-:PROPERTIES:
-:ROAM_ALIASES: RVO copy-elision
-:ID:       811b8566-14d1-442b-bb7b-5728d622a0ad
-:END:
 
 The compiler is allowed — and since C++17, *required* in some cases — to eliminate copy and move operations by constructing the returned object directly in the caller's memory. This is *copy elision*.
 
@@ -170,10 +147,6 @@ Widget w = makeWidget();  // No copy or move — guaranteed in C++17
 Since C++17, RVO is *mandatory* for prvalues (temporaries). NRVO is permitted but not guaranteed — the compiler may choose to move instead if elision is not possible. The important implication: *do not rely on the copy/move constructor being called for debugging side effects* — the compiler may elide it.
 
 ** Move Constructor and Move Assignment
-:PROPERTIES:
-:ROAM_ALIASES: move-constructor move-assignment
-:ID:       ada9aebf-35be-4654-840b-b8ace8e23987
-:END:
 
 Move semantics (C++11) allow transferring ownership of a resource from one object to another without copying. A move constructor takes an *rvalue reference* (~~&~) and typically "steals" the guts of the source, leaving it in a valid-but-unspecified state (usually null/empty).
 
@@ -188,10 +161,6 @@ Move operations are especially important for types that manage heap resources, l
 ~std::move~ does not actually move anything. It is a cast to an rvalue reference, enabling move semantics if the target type has a move constructor/assignment. The actual transfer happens in the move constructor or move assignment operator.
 
 ** Why noexcept Matters for Move
-:PROPERTIES:
-:ROAM_ALIASES: noexcept exception-safety
-:ID:       84b4d10d-6ec9-4693-9485-4ca7482caf32
-:END:
 
 Marking move constructors and move assignment operators as ~noexcept~ is critical for performance and correctness with standard containers:
 
@@ -210,10 +179,6 @@ This has a massive performance impact: moving a ~std::vector<std::string>~ can b
 The rule: move constructors and move assignment operators should always be ~noexcept~ unless there is a strong reason they cannot be. Most moves that simply transfer pointers/ints are naturally noexcept.
 
 ** Rule of Zero — Let the Compiler Do the Work
-:PROPERTIES:
-:ROAM_ALIASES: rule-of-zero special-member
-:ID:       f9bf33b4-f3a9-4772-be71-88c430d91282
-:END:
 
 The *Rule of Zero* states: classes that do not manage resources directly should *not* declare any of the special member functions. Let the compiler generate them. This is the modern ideal:
 
@@ -236,10 +201,6 @@ class Person {
 The Rule of Zero works when every member is a *well-behaved value type* — standard library containers, smart pointers, or your own types that also follow the Rule of Zero. If any member is a raw resource handle (raw pointer, file descriptor, OS handle), you must drop to the Rule of Five and manage it explicitly.
 
 ** Copy-and-Swap Idiom
-:PROPERTIES:
-:ROAM_ALIASES: copy-and-swap exception-safety
-:ID:       66e0f7dd-b4e7-475e-bd4e-268422ce8d61
-:END:
 
 The copy-and-swap idiom provides a clean, exception-safe way to implement copy assignment by reusing the copy constructor and a ~swap~ function:
 
@@ -273,10 +234,6 @@ How it works:
 This provides the *strong exception guarantee* — if the copy throws, ~*this~ is untouched. It also handles self-assignment naturally (~a = a~ makes a copy, swaps with itself, destroys the copy — net no change). The tradeoff is an extra allocation (the copy) compared to the manual check-then-copy approach.
 
 ** Implicit Generation Rules (=default, =delete)
-:PROPERTIES:
-:ROAM_ALIASES: default delete
-:ID:       c37bb05b-1848-49f7-b442-61cc6c55ad22
-:END:
 
 The compiler's rules for generating special member functions are nuanced. Declaring any of them can suppress generation of others:
 
@@ -304,10 +261,6 @@ public:
 This is the idiomatic way to express move-only types. ~std::unique_ptr~, ~std::thread~, ~std::mutex~ are all move-only.
 
 ** Shallow vs Deep Copy
-:PROPERTIES:
-:ROAM_ALIASES: shallow deep
-:ID:       47b2bc2a-81e5-4fb8-bea7-09ed133b1696
-:END:
 
 | Copy Type  | What It Duplicates              | Risk                               | When to Use                   |
 |------------|---------------------------------|------------------------------------|-------------------------------|
@@ -317,10 +270,6 @@ This is the idiomatic way to express move-only types. ~std::unique_ptr~, ~std::t
 The default copy constructor always performs a shallow (memberwise) copy. For classes managing heap resources, a deep copy is usually required — but modern C++ makes this rare by replacing raw pointers with value-semantic types (~std::string~ instead of ~char*~, ~std::vector~ instead of ~new[]~).
 
 ** Best Practice
-:PROPERTIES:
-:ROAM_ALIASES: RAII
-:ID:       765f92a5-55af-4c0e-9208-3f4aab974048
-:END:
 
 Follow the Rule of Zero by default. Prefer ~std::string~, ~std::vector~, smart pointers ([[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]]), and other RAII types over raw pointers. These types handle copy and move semantics correctly — you inherit correct behavior without writing a single special member function.
 
