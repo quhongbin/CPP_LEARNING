@@ -5,13 +5,13 @@
 #+title: operating-system
 
 * Process
-n:PROPERTIES:
+:PROPERTIES:
 :ROAM_ALIASES: OS process
 :ID:       84dc9817-d304-46ce-b33f-273bfeee4f09
 :END:
 - A basic resources unit which is assigned with memory in OS
 - Has isolated memory address
-
+  
 * Thread
 :PROPERTIES:
 :ID:       4d306248-c201-4184-991b-f0f69de4b946
@@ -20,7 +20,7 @@ n:PROPERTIES:
 
 - A basic unit is called by CPU
 - rely on and within [[Process]]
-
+  
 * coroutine
 :PROPERTIES:
 :ROAM_ALIASES: coroutine
@@ -309,5 +309,83 @@ In fact, in a general-purpose OS,the OS usually knows very little about the leng
 
 ** The Multiple-Level Feedback Queue
 
-[[id:ec82f92c-b04b-4f3e-a00c-dfe5b21563e0][stack]]
+[^1]: **convey effect**: the process of CPU-bound or heavyweight
+    resource to consume runs exclusively on CPU. otherwise, there are a
+    pile of processes need light resource to consume behind the heavy
+    process
 
+    1.  Shortest Job First It turn out a approach solve this problem,
+        then the Queue will be
+
+      ----- ------------ ----------
+      Job   Turnaround   priority
+      B     10s          1
+      C     20s          2
+      A     120s         3
+      ----- ------------ ----------
+
+    -   average turnaroud time(aforementioned $T_{arrival} = 0 $)
+
+    $$\frac{10+20+120}{3} = 50 $$
+
+    > In the old days of batch computing, a number of non-preemptive
+    > schedulers were developed. Virtually all modern scheders are
+    > preemptive, stop one process from running in order to run another;
+    > in particular, the scheduler can perform **context switch**,
+    > stopping temporarily process is running and resuming(or starting)
+    > another
+
+** Address Spaces
+*** three goals for virtualize memory
+- transparency
+    - it means opposite: that he illusion was provided by OS
+- efficiency
+    - OS make the virtulization as **efficiency** as possible, both time and space(just each of processes can't run much more time or slowly; can't cost more memory)
+- protection
+     - isolate processes, make sure that each of processes has private address spaces
+
+*** Address Translation
+OS with hardware's help turns the ugly physical mechanism into something that is useful, powerful, and easy to use abstraction
+
+**** DOING Base and Bounds
+- it need two registers within CPU; one is called **Base**, the other is called **Bound**. base-and-bound pair allow we to place anywhere in physical address
+#+begin_quote
+the technique is also referred to as **dynamic relocation**. because base-and-bound pair translate address occur in runtime, so we can move address spaces after the process has started running
+#+end_quote
+
+physical address = virtual address + base; if physical address less than bounds, the address is legal. And CPU will raise exception, if physical address out of bounds
+
+disadvantage for dynamic relocation
+1. internal fragmentaion
+    As it allocate a fixed-sized contiguous physical memory for entire process(include codes, heap, stack so forth), the spaces bettwen head and stack is internal fragmentaion;
+
+[[file:images/dynamic-relocation.png][dynamic relocation internal fragmentation]]
+
+**** DOING segmentation
+:PROPERTIES:
+:ID:       efdce789-cb76-45b6-912d-bf30095e3cc2
+:END:
+
+#+begin_quote
+The base-and-bound pair below is inside one of CPU cache specilly, just one pair. Under the situation, the pair was used to switch context each of processes, just only one pair. It has cost performance additional. And it's not as flexible as we would like
+#+end_quote
+
+each of logical segmentation(e.g. code, heap, stack) from process has a base-and-bound pair
+| segment | Base | Size |
+| Code    | 32K  | 2K   |
+| Heap    | 34K  | 2K   |
+| Stack   | 28K  | 2K   |
+
+[[file:images/segmentation.png][segmentation shows]]
+
+Example
+virtual address 4200 in the heap,In physical address space the heap of base is 28K. So the offset is 104 as 4200 minus 4096(as heap start at 4K in process address space), then the reflecting physical address is 28K plus 104
+
+[[file:images/allocate-by-segmentation.png][translate address by segmentation]]
+
+How to select segment we referring to correctly?
+In vmx/vms system, it provided a explicit approach to chop up the address space into segment based on the top a few bits of virtual address
+
+[[file:images/approch_to_segmentation.png][approach to select segment]]
+
+the top two bits is used to select which segments to locate physical address by offset(indicated by the others bits)
