@@ -6,6 +6,8 @@ title: operating-system operating-system
 
 -   A basic resources unit which is assigned with memory in OS
     -   Has isolated memory address
+> arly System
+
 
 # Thread
 
@@ -405,3 +407,30 @@ complete; the system is thus better utilized
     > in particular, the scheduler can perform **context switch**,
     > stopping temporarily process is running and resuming(or starting)
     > another
+
+## Address Spaces
+### three goals for virtualize memory
+- transparency
+	- it means opposite: that he illusion was provided by OS
+- efficiency
+	- OS make the virtulization as **efficiency** as possible, both time and space(just each of processes can't run much more time or slowly; can't cost more memory)
+- protection
+	 - isolate processes, make sure that each of processes has private address spaces
+
+### Address Translation
+OS with hardware's help turns the ugly physical mechanism into something that is useful, powerful, and easy to use abstraction
+
+#### Base and Bounds
+- it need two registers within CPU; one is called **Base**, the other is called **Bound**. base-and-bound pair allow we to place anywhere in physical address 
+
+> the technique is also referred to as **dynamic relocation**. because base-and-bound pair translate address occur in runtime, so we can move address spaces after the process has started running
+
+physical address = virtual address + base; if physical address less than bounds, the address is legal. And CPU will raise exception, if physical address out of bounds
+
+
+#### segmentation
+
+
+
+#### MMU
+Memory management unit is a part of processor to help address translation 
