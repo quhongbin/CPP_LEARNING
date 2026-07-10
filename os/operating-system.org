@@ -389,3 +389,23 @@ In vmx/vms system, it provided a explicit approach to chop up the address space 
 [[file:images/approch_to_segmentation.png][approach to select segment]]
 
 the top two bits is used to select which segments to locate physical address by offset(indicated by the others bits)
+
+There is a implicit approach, the hardware determines segment how the address was formed.
+Just like,The hardware will find the address from Code Segment if it's from Program Counter; if the address is based off of stack or base poniter, it must be in the stack segment, any other address must be in the heap
+
+What about The Stack?
+
+
+
+Heap growth in postive direction as the address is increasing; Stack with negative-growth. We need a bit to mark segment Grows Postive
+
+| segment | Base | Size | Grows Postive |
+| Code    | 32K  | 2K   |             1 |
+| Stack   | 28K  | 2K   |             1 |
+| Heap    | 34K  | 2K   |             0 |
+#+begin_quote
+1 indicate Growth postive, 0 in negative-growth
+#+end_quote
+
+* TODO example for how to allocate memory stack
++ to explain stack memory how to allocate
