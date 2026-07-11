@@ -346,7 +346,6 @@ In fact, in a general-purpose OS,the OS usually knows very little about the leng
 
 *** Address Translation
 OS with hardware's help turns the ugly physical mechanism into something that is useful, powerful, and easy to use abstraction
-
 **** DOING Base and Bounds
 - it need two registers within CPU; one is called **Base**, the other is called **Bound**. base-and-bound pair allow we to place anywhere in physical address
 #+begin_quote
@@ -356,12 +355,13 @@ the technique is also referred to as **dynamic relocation**. because base-and-bo
 physical address = virtual address + base; if physical address less than bounds, the address is legal. And CPU will raise exception, if physical address out of bounds
 
 disadvantage for dynamic relocation
-1. internal fragmentaion
-    As it allocate a fixed-sized contiguous physical memory for entire process(include codes, heap, stack so forth), the spaces bettwen head and stack is internal fragmentaion;
+1. internal fragmentation
+    As it allocate a fixed-sized contiguous physical memory for entire process(include codes, heap, stack so forth), the spaces bettwen head and stack is internal fragmentation;
 
 [[file:images/dynamic-relocation.png][dynamic relocation internal fragmentation]]
 
-**** DOING segmentation
+
+** DOING segmentation
 :PROPERTIES:
 :ID:       efdce789-cb76-45b6-912d-bf30095e3cc2
 :END:
@@ -369,7 +369,7 @@ disadvantage for dynamic relocation
 #+begin_quote
 The base-and-bound pair below is inside one of CPU cache specilly, just one pair. Under the situation, the pair was used to switch context each of processes, just only one pair. It has cost performance additional. And it's not as flexible as we would like
 #+end_quote
-
+1. logical segmentation
 each of logical segmentation(e.g. code, heap, stack) from process has a base-and-bound pair
 | segment | Base | Size |
 | Code    | 32K  | 2K   |
@@ -383,7 +383,7 @@ virtual address 4200 in the heap,In physical address space the heap of base is 2
 
 [[file:images/allocate-by-segmentation.png][translate address by segmentation]]
 
-How to select segment we referring to correctly?
+2. How to select segment we referring to correctly?
 In vmx/vms system, it provided a explicit approach to chop up the address space into segment based on the top a few bits of virtual address
 
 [[file:images/approch_to_segmentation.png][approach to select segment]]
@@ -393,9 +393,7 @@ the top two bits is used to select which segments to locate physical address by 
 There is a implicit approach, the hardware determines segment how the address was formed.
 Just like,The hardware will find the address from Code Segment if it's from Program Counter; if the address is based off of stack or base poniter, it must be in the stack segment, any other address must be in the heap
 
-What about The Stack?
-
-
+3. What about The Stack?
 
 Heap growth in postive direction as the address is increasing; Stack with negative-growth. We need a bit to mark segment Grows Postive
 
@@ -407,5 +405,50 @@ Heap growth in postive direction as the address is increasing; Stack with negati
 1 indicate Growth postive, 0 in negative-growth
 #+end_quote
 
-* TODO example for how to allocate memory stack
-+ to explain stack memory how to allocate
+4. Support for Sharing
+   System designers soon realized that they could realize new type of efficiencs with a lot more hardware support. Specifically, it's useful to share certain memory segments between address spaces
+   To support sharing, we need a little extra support from the hardware, in the form of *Protection Bits* add a few bits per segment to indicate the segment status— read-Execute, read-write, read-only so forth.
+
+| segment | Base | Size | Grows Postive | Protection  |
+| Code    | 32K  | 2K   |             1 | Read-Eexute |
+| Stack   | 28K  | 2K   |             1 | Read-Write  |
+| Heap    | 34K  | 2K   |             0 | Read-Write  |
+Segment Register Values (with Protection)
+
+By setting a code segment to read-only, the same code can be shared across multiple processes, without worry of harming isolation;
+
+With protection bits, the hardware algorithm described earlier would also have to change. In addition to checking whether a virtual address is within bounds, the hardware also has to check whether a particular access is permissible. 
+
+5. Fine-grained & Coarse-grained Segmentation
+   + far discussed segments(e.g code,stack,heap), we can think of they are coarse-grained segmentation
+   + Some early systems(e.g. Multics) were more flexible and allowed for address spaces to consist of a large number of smaller segments, referred to *fine-grained* segmentation.
+
+6. OS Support
+   As learning about how segmentation works, Pieces of the address space are relocated into physical memory, and thus a huge savings of physical memory is achieved
+   But, segments raises a number of new issues.
+   1). How to do on a context switch?
+   the segment registers must be saved and restored by OS
+   2). External fragmentation
+   as far as I konw, segmentation can be allocated in different size. If per process has a number of segments, consequently, whole chunks have been allocated is non-contiguous
+[[file:images/segmentation_compact.png][non-contiguous chunks]]
+
+One solution to this problem would be to compact physical memory by rearranging the existing segments.
+there are many algorithm polics to select which chunk will be rearranged by chunk status 
++ best-fit
++ worst-fit
++ first-fit
++ buddy-algorithm
+
+
+** Free-Space Management
+In segments chapter, we know it left external fragmentation as system runs
+Like the title, here introduce how to manage free spaces make physical memory efficiency of usage.
+
+
+
+
+
+* TODO
+
++ to explain stack memory how to allocate<2026-07-10 Fri>
+
