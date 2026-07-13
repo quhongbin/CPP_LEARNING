@@ -1,0 +1,16 @@
+#+title: nullptr
+#+author: Hongbin Qu
+#+date: <2026-07-11 Sat>
+
+* C++ nullptr
+
+#+begin_quote
+This word is supplied for C++11 standard
+#+end_quote
+
+in C program language, NULL is a constant integral and macro, the NULL is placed 0 or (void*)0 in pre-handle time.
+
+In C++ nullptr is a basic type nullptr_t, NULL is number of 0(as it stronge language with forbidding void* convert onther pointers of types implicitly)
+#+begin_quote
+(void*)0 means that the number 0 was converted pointer of void, it's behalf of any types(int,char,so forth). it indicate that virtual address was marked non-write,non-read,non-execute on the top of User Address Space
+#+end_quote
