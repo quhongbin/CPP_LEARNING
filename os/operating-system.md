@@ -12,7 +12,9 @@ title: operating-system operating-system
 # Thread
 
 -   A basic unit is called by CPU
--   rely on and within [*Process*]{.spurious-link target="Process"}
+-   rely on and within [*Process*]
+-   use the virtual address from the Process, but the Threads must be in same process
+
 
 # coroutine
 
