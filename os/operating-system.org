@@ -464,12 +464,25 @@ Assume there is only 30 Byte have been allocated in heap, and the address of mid
 
 [[file:images/FreeSpace-Management/30_bytes_allocated.png]]
 
-In this case, the request need the memory which more than 10 bytes, it's will fail to allocate and return NULL; there isn't singal contigous chunk of memory of that size availabel
+In this case, the request need the memory which more than 10 bytes, it's will fail to allocate and return NULL; there isn't singal contiguous chunk of memory of that size availabel
 
 Assume it request for single byte of memory. In this case, the allocater will perform an action known as *splitting*: it will find free chunk of memory that satisfy the request and split it into two.
 [[File:images/FreeSpace-Management/splitting.png]]
 
+then the left chunk has been allocated to the request, the right chunk minus single byte
 
+#+begin_quote
+*Free List* structure contains references to all of free chunks of space in the managed region of memory; It will be created when resources was initialized (like disks initialization, allocated heap). In user-level allocated heap, it manage the free chunk of space references to visual address
+/*the structure manage various objects in different scenes*/, this knowledge can be introduced by LLM
+#+end_quote
+
+A corollary mechanism in most allocator is known as *coalescing* of free space
+
+[[file:images/FreeSpace-Management/coalesce_free_space.png]]
+
+when managed region memory space have contiguous address, The machenism is triggerd to coalesce the chunks
+
+**** Tracking the size of allocated regions
 
 
 
