@@ -484,6 +484,47 @@ when managed region memory space have contiguous address, The machenism is trigg
 
 **** Tracking the size of allocated regions
 
+Why the free() accept only singal parameter which is a pointer to release the allocated region?
+
+To accomplish this task, most allocators store a little of extra information in a header block which is kept in memory
+It minimally contains the size of allocated region, also contain additional poniter to speed up deallocation, a magic number to verify integrity, and other information. the sence that here is we assume the header block contain only size of the allocated region and magic number
+
+#+begin_src C
+typedef struct __header_t {
+  int size;
+  int magic;
+} header_t;
+#+end_src
+
+[[file:images/FreeSpace-Management/header_track_size.png]]
+
+Thus far, we know it how to track the size and why the interface free() accept singal poniter parameter
+
+#+begin_quote
+why the size of allocated region need tracked?
+#+end_quote
+
+**** Embedding A Free List
+
+maintained the said Free List as as separate unit. It cast additional performance overhead.
+In more typical list, when you need space for the node by calling malloc(). Unfortunately, you can't do this in memory-allocation library. Instead, you need build the list inside the free space itself, as the subtitle stated.
+why we need Embedding A Free List?
++ dynamic extend heap
++ management convience
++ and so forth,ask for LLM
+
+
+Assume we get 4K heap via malloc(), and virtual addres is 16384
+
+[[file:images/FreeSpace-Management/Embedding_Free_List.png]]
+
+*** DOING Basic Strategies
+
++ best fit
++ Worst Fit
++ First Fit
++ Next Fit
++ segregated Lists
 
 
 * TODO
