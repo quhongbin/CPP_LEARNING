@@ -1,6 +1,13 @@
+:PROPERTIES:
+:ID:       20250527T230614
+:END:
 #+title: C++ Smart Pointers & Ref
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
+#+hugo_section: zh-cn/posts
+#+hugo_tags: CPP
+#+hugo_custom_front_matter: :logs test
+#+hugo_custom_front_matter: :logs_descripe "中文测试"
 
 * C++ Smart Pointers & Ref
 
@@ -26,7 +33,7 @@ The choice between them is a design decision about ownership, not performance:
 
 ** Godot Ref<T>
 
-Godot engine uses its own smart pointer template ~Ref<T>~ instead of ~std::shared_ptr<T>~. It works exclusively with classes that inherit from ~RefCounted~, which embeds the reference counter directly inside the object (intrusive reference counting — see [[id:d0d448fe-484e-49a2-9c29-aa7d34343744][Reference Counting]]).
+Godot engine uses its own smart pointer template ~Ref<T>~ instead of ~std::shared_ptr<T>~. It works exclusively with classes that inherit from ~RefCounted~, which embeds the reference counter directly inside the object (intrusive reference counting — see [[id:20250527T064553][Reference Counting]]).
 
 The key difference from ~shared_ptr~:
 - ~Ref<T>~ stores a single pointer — the counter is inside the object, not in a separate control block.
@@ -167,9 +174,9 @@ s1.reset();                        // count drops to 1
 
 ** Related Notes
 
-- [[id:d0d448fe-484e-49a2-9c29-aa7d34343744][Reference Counting]] — the mechanism shared_ptr and Ref<T> use to track ownership
-- [[id:608ddcb6-9345-4cee-9aae-9dc1c2783338][C++ Templates]] — all smart pointers are class templates
-- [[id:f5899ea2-320f-4845-8ed3-68b68ba1cdcd][Copy Constructors]] — smart pointers implement copy and move semantics
-- [[id:d90d89de-f807-4187-a9f7-a1501e9dcda5][C++ Memory Management]] — parent topic; RAII and resource lifetime
-- [[id:470066fc-cee3-48da-a217-9abc41c4818d][C++ Function Pointers]] — custom deleters can be function pointers or lambdas
-- [[id:dae30869-f9e6-43e5-b188-661d59b714c4][C++ void* Pointers]] — raw void* is the pre-modern way to handle type-erased pointers; smart pointers replace it
+- [[id:20250527T064553][Reference Counting]] — the mechanism shared_ptr and Ref<T> use to track ownership
+- [[id:20250527T190202][C++ Templates]] — all smart pointers are class templates
+- [[id:20250527T012125][Copy Constructors]] — smart pointers implement copy and move semantics
+- [[id:20250527T012935][C++ Memory Management]] — parent topic; RAII and resource lifetime
+- [[id:20250527T010446][C++ Function Pointers]] — custom deleters can be function pointers or lambdas
+- [[id:20250527T061305][C++ void* Pointers]] — raw void* is the pre-modern way to handle type-erased pointers; smart pointers replace it

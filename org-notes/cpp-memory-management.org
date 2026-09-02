@@ -1,6 +1,13 @@
+:PROPERTIES:
+:ID:       20250527T012935
+:END:
 #+title: C++ Memory Management
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
+#+hugo_section: zh-cn/posts
+#+hugo_tags: CPP
+#+hugo_custom_front_matter: :logs power by AI
+#+hugo_custom_front_matter: :logs_descripe ""
 
 * C++ Memory Management
 
@@ -63,7 +70,7 @@ You can query alignment at compile time with ~alignof(T)~ and override it with ~
 alignas(64) char cache_line[64];  // force 64-byte alignment (prevents false sharing)
 #+end_src
 
-Alignment matters for performance (cache-line alignment avoids false sharing in multi-threaded code) and for correctness when doing low-level memory work (casting ~void*~ to typed pointers — see [[id:dae30869-f9e6-43e5-b188-661d59b714c4][C++ void* Pointers]]).
+Alignment matters for performance (cache-line alignment avoids false sharing in multi-threaded code) and for correctness when doing low-level memory work (casting ~void*~ to typed pointers — see [[id:20250527T061305][C++ void* Pointers]]).
 
 ** RAII — Resource Acquisition Is Initialization
 
@@ -93,7 +100,7 @@ RAII applies to any resource, not just memory:
 - *GPU resources* (textures, buffers, shaders)
 - *Database transactions* (commit on success, rollback on exception)
 
-Smart pointers ([[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]]) are the canonical RAII wrapper for heap memory: the pointer is the resource, the constructor takes ownership, the destructor calls ~delete~.
+Smart pointers ([[id:20250527T230614][C++ Smart Pointers & Ref]]) are the canonical RAII wrapper for heap memory: the pointer is the resource, the constructor takes ownership, the destructor calls ~delete~.
 
 ** Custom Allocators and Memory Pools
 
@@ -127,16 +134,16 @@ Standard containers use placement ~new~ internally: ~std::vector::emplace_back~ 
 
 ** Key Topics
 
-- [[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]] — automatic memory management through RAII; unique_ptr, shared_ptr, weak_ptr, and Godot's Ref<T>
-- [[id:d0d448fe-484e-49a2-9c29-aa7d34343744][Reference Counting]] — shared ownership tracking; atomic vs non-atomic; intrusive vs non-intrusive
-- [[id:dae30869-f9e6-43e5-b188-661d59b714c4][C++ void* Pointers]] — raw untyped memory access; the foundation of ~malloc~/~free~ and custom allocators
-- [[id:f5899ea2-320f-4845-8ed3-68b68ba1cdcd][Copy Constructors]] — controlling how objects are copied; deep vs shallow copy; move semantics
+- [[id:20250527T230614][C++ Smart Pointers & Ref]] — automatic memory management through RAII; unique_ptr, shared_ptr, weak_ptr, and Godot's Ref<T>
+- [[id:20250527T064553][Reference Counting]] — shared ownership tracking; atomic vs non-atomic; intrusive vs non-intrusive
+- [[id:20250527T061305][C++ void* Pointers]] — raw untyped memory access; the foundation of ~malloc~/~free~ and custom allocators
+- [[id:20250527T012125][Copy Constructors]] — controlling how objects are copied; deep vs shallow copy; move semantics
 
 ** Related Language Features
 
-- [[id:608ddcb6-9345-4cee-9aae-9dc1c2783338][C++ Templates]] — custom allocators are templated on the type they allocate
-- [[id:470066fc-cee3-48da-a217-9abc41c4818d][C++ Function Pointers]] — factory functions and custom deleters use function pointers
-- [[id:2ae84663-9f28-426d-a4eb-a8ffebae71b2][C++ Enum vs Struct Class]] — struct layout and alignment relate to memory layout and padding
+- [[id:20250527T190202][C++ Templates]] — custom allocators are templated on the type they allocate
+- [[id:20250527T010446][C++ Function Pointers]] — factory functions and custom deleters use function pointers
+- [[id:20250527T033930][C++ Enum vs Struct Class]] — struct layout and alignment relate to memory layout and padding
 
 ** Key Rule
 

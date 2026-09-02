@@ -1,6 +1,13 @@
+:PROPERTIES:
+:ID:       20250527T061305
+:END:
 #+title: C++ void* Pointers
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
+#+hugo_section: zh-cn/posts
+#+hugo_tags: CPP
+#+hugo_custom_front_matter: :logs power by AI
+#+hugo_custom_front_matter: :logs_descripe ""
 
 * C++ void* Pointers
 
@@ -83,7 +90,7 @@ Handle* create_handle(int param) {
 
 This pattern has two major benefits: (1) *ABI stability* — changing Handle's internals does not require recompiling code that only sees the forward declaration; (2) *build-time isolation* — the public header stays clean without pulling in internal dependencies (libraries, platform headers, etc.).
 
-However, ~void*~-based type erasure has a critical weakness compared to templates: it moves type checking from compile time to runtime. If you cast to the wrong type, you get undefined behavior with no compiler warning. Templates ([[id:608ddcb6-9345-4cee-9aae-9dc1c2783338][C++ Templates]]) provide compile-time type erasure with full safety — the tradeoff is potential code bloat from multiple instantiations.
+However, ~void*~-based type erasure has a critical weakness compared to templates: it moves type checking from compile time to runtime. If you cast to the wrong type, you get undefined behavior with no compiler warning. Templates ([[id:20250527T190202][C++ Templates]]) provide compile-time type erasure with full safety — the tradeoff is potential code bloat from multiple instantiations.
 
 ** std::any — The Modern Alternative
 
@@ -145,19 +152,19 @@ Two major footguns with raw ~void*~ casting:
 
 In modern C++, ~void*~ should be reserved for:
 - Interfacing with C libraries that require it
-- Writing custom allocators ([[id:d90d89de-f807-4187-a9f7-a1501e9dcda5][C++ Memory Management]])
+- Writing custom allocators ([[id:20250527T012935][C++ Memory Management]])
 - Low-level memory utilities where type erasure is the explicit goal
 - Very hot paths where ~std::any~ or ~std::variant~ overhead is unacceptable
 
 For all other cases, prefer:
 - ~std::any~ (C++17) — type-erased single value with runtime checking
 - ~std::variant<A, B, C>~ (C++17) — closed-set type-safe union, stack-allocated
-- Templates — compile-time type erasure with zero runtime overhead ([[id:608ddcb6-9345-4cee-9aae-9dc1c2783338][C++ Templates]])
-- Smart pointers — typed ownership with automatic cleanup ([[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]])
+- Templates — compile-time type erasure with zero runtime overhead ([[id:20250527T190202][C++ Templates]])
+- Smart pointers — typed ownership with automatic cleanup ([[id:20250527T230614][C++ Smart Pointers & Ref]])
 
 ** Related Notes
 
-- [[id:608ddcb6-9345-4cee-9aae-9dc1c2783338][C++ Templates]] — compile-time type erasure vs void* runtime type erasure
-- [[id:d90d89de-f807-4187-a9f7-a1501e9dcda5][C++ Memory Management]] — void* is the return type of malloc/calloc, central to allocator design
-- [[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]] — smart pointers eliminate the need for void* in ownership scenarios
-- [[id:470066fc-cee3-48da-a217-9abc41c4818d][C++ Function Pointers]] — function pointers cannot reliably be stored in void*; use std::function
+- [[id:20250527T190202][C++ Templates]] — compile-time type erasure vs void* runtime type erasure
+- [[id:20250527T012935][C++ Memory Management]] — void* is the return type of malloc/calloc, central to allocator design
+- [[id:20250527T230614][C++ Smart Pointers & Ref]] — smart pointers eliminate the need for void* in ownership scenarios
+- [[id:20250527T010446][C++ Function Pointers]] — function pointers cannot reliably be stored in void*; use std::function

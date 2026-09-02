@@ -1,6 +1,13 @@
+:PROPERTIES:
+:ID:       20250527T064553
+:END:
 #+title: Reference Counting
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
+#+hugo_section: zh-cn/notes
+#+hugo_tags: CPP
+#+hugo_custom_front_matter: :logs power by AI
+#+hugo_custom_front_matter: :logs_descripe ""
 
 * Reference Counting
 
@@ -130,7 +137,7 @@ The rule of thumb: the "natural owner" direction gets ~shared_ptr~; the "back-re
 
 ** Related Notes
 
-- [[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]] — shared_ptr and Ref<T> use reference counting
-- [[id:f5899ea2-320f-4845-8ed3-68b68ba1cdcd][Copy Constructors]] — copy constructors trigger reference count increments
-- [[id:d90d89de-f807-4187-a9f7-a1501e9dcda5][C++ Memory Management]] — parent topic; reference counting vs other GC strategies
-- [[id:608ddcb6-9345-4cee-9aae-9dc1c2783338][C++ Templates]] — shared_ptr's control block is a template implementation detail
+- [[id:20250527T230614][C++ Smart Pointers & Ref]] — shared_ptr and Ref<T> use reference counting
+- [[id:20250527T012125][Copy Constructors]] — copy constructors trigger reference count increments
+- [[id:20250527T012935][C++ Memory Management]] — parent topic; reference counting vs other GC strategies
+- [[id:20250527T190202][C++ Templates]] — shared_ptr's control block is a template implementation detail

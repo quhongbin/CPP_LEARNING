@@ -1,6 +1,10 @@
 #+title: nullptr
 #+author: Hongbin Qu
 #+date: <2026-07-11 Sat>
+#+hugo_section: zh-cn/posts
+#+hugo_tags: CPP
+#+hugo_custom_front_matter: :logs power by AI
+#+hugo_custom_front_matter: :logs_descripe ""
 
 * C++ nullptr
 

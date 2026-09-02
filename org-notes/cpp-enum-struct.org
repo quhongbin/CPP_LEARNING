@@ -1,9 +1,14 @@
+:PROPERTIES:
+:ID:       20250527T033930
+:END:
 #+title: C++ Enum vs Struct Class
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-#+hugo_base_dir: ~/Obsidian/hugo_blog/
-#+hugo_section: org-notes
-#+hugo_front_matter_format: yaml
+#+hugo_section: zh-cn/notes
+#+hugo_tags: CPP
+#+hugo_custom_front_matter: :logs power by AI
+#+hugo_custom_front_matter: :logs_descripe ""
+
 * C++ Enum vs Struct Class
 
 ~enum~ and ~struct~ are both user-defined types in C++, but they serve fundamentally different roles: ~enum~ defines a set of named constants (values), while ~struct~ defines a compound data type (a bundle of data members). Understanding both — and their modern variants — is essential for writing clear, type-safe C++.

@@ -1,4 +1,9 @@
 #+title: constant-string
+#+hugo_section: zh-cn/posts
+#+hugo_tags: CPP
+#+hugo_custom_front_matter: :logs powered by AI
+#+hugo_custom_front_matter: :logs_descripe ""
+
 # const and constexpr
 1. on variable value
 	- "const" modifies an object or value,which hasn't been changing:RiComputerFill:

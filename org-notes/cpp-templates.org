@@ -1,11 +1,13 @@
 :PROPERTIES:
-:ID:       ae676c05-b77f-4307-87f4-47fb97e19f7f
+:ID:       20250527T190202
 :END:
 #+title: C++ Templates
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-#+HUGO_BASE_DIR: ~/Obsidian/hugo_blog/
-#+hugo_section: org-notes
+#+hugo_section: zh-cn/notes
+#+hugo_tags: CPP
+#+hugo_custom_front_matter: :logs test
+#+hugo_custom_front_matter: :logs_descripe "中文测试"
 * C++ Templates
 
 Templates are C++'s mechanism for *generic programming* — writing code that works with any type without repeating yourself. Unlike runtime polymorphism (virtual functions), templates are resolved entirely at compile time: the compiler generates a separate copy of the function or class for each set of type arguments actually used. This is called *template instantiation*.
@@ -62,7 +64,7 @@ Godot uses templates heavily throughout its core. A prime example is the memory 
 
 This compile-time dispatch means no runtime branch, no ~if~ check, no function-pointer indirection — the compiler generates two versions, and the one actually called is resolved during compilation. This pattern is called *static polymorphism* and is a key performance technique in game engines.
 
-Another critical Godot template is ~Ref<T>~ ([[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]]), which is a reference-counted smart pointer template. It only accepts classes derived from ~RefCounted~, enforced through template constraints.
+Another critical Godot template is ~Ref<T>~ ([[id:20250527T230614][C++ Smart Pointers & Ref]]), which is a reference-counted smart pointer template. It only accepts classes derived from ~RefCounted~, enforced through template constraints.
 
 ** Template Specialization — Full and Partial
 

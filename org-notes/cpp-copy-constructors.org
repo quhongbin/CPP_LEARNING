@@ -1,6 +1,13 @@
+:PROPERTIES:
+:ID:       20250527T012125
+:END:
 #+title: Copy Constructors
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
+#+hugo_section: zh-cn/notes
+#+hugo_tags: CPP
+#+hugo_custom_front_matter: :logs power by AI
+#+hugo_custom_front_matter: :logs_descripe ""
 
 * Copy Constructors
 
@@ -271,7 +278,7 @@ The default copy constructor always performs a shallow (memberwise) copy. For cl
 
 ** Best Practice
 
-Follow the Rule of Zero by default. Prefer ~std::string~, ~std::vector~, smart pointers ([[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]]), and other RAII types over raw pointers. These types handle copy and move semantics correctly — you inherit correct behavior without writing a single special member function.
+Follow the Rule of Zero by default. Prefer ~std::string~, ~std::vector~, smart pointers ([[id:20250527T230614][C++ Smart Pointers & Ref]]), and other RAII types over raw pointers. These types handle copy and move semantics correctly — you inherit correct behavior without writing a single special member function.
 
 When you must manage a raw resource (OS handles, custom allocators, C library wrappers), apply the Rule of Five:
 1. Write a destructor to release the resource.
@@ -284,9 +291,9 @@ If you find yourself writing Rule of Five for a single resource, consider extrac
 
 ** Related Notes
 
-- [[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]] — smart pointers implement correct copy/move semantics (unique_ptr is move-only)
-- [[id:d0d448fe-484e-49a2-9c29-aa7d34343744][Reference Counting]] — shared_ptr's copy constructor increments the reference count
-- [[id:d90d89de-f807-4187-a9f7-a1501e9dcda5][C++ Memory Management]] — parent topic; RAII binds resource lifetime to object lifetime
-- [[id:608ddcb6-9345-4cee-9aae-9dc1c2783338][C++ Templates]] — template constructors are never copy constructors; template classes follow the same rules
-- [[id:2ae84663-9f28-426d-a4eb-a8ffebae71b2][C++ Enum vs Struct Class]] — structs with raw pointers need custom copy constructors (Rule of Three)
-- [[id:470066fc-cee3-48da-a217-9abc41c4818d][C++ Function Pointers]] — lambdas with copy captures invoke copy constructors of captured objects
+- [[id:20250527T230614][C++ Smart Pointers & Ref]] — smart pointers implement correct copy/move semantics (unique_ptr is move-only)
+- [[id:20250527T064553][Reference Counting]] — shared_ptr's copy constructor increments the reference count
+- [[id:20250527T012935][C++ Memory Management]] — parent topic; RAII binds resource lifetime to object lifetime
+- [[id:20250527T190202][C++ Templates]] — template constructors are never copy constructors; template classes follow the same rules
+- [[id:20250527T033930][C++ Enum vs Struct Class]] — structs with raw pointers need custom copy constructors (Rule of Three)
+- [[id:20250527T010446][C++ Function Pointers]] — lambdas with copy captures invoke copy constructors of captured objects

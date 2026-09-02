@@ -1,6 +1,13 @@
+:PROPERTIES:
+:ID:       20250527T010446
+:END:
 #+title: C++ Function Pointers
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
+#+hugo_section: zh-cn/notes
+#+hugo_tags: CPP
+#+hugo_custom_front_matter: :logs power by AI
+#+hugo_custom_front_matter: :logs_descripe ""
 
 * C++ Function Pointers
 
@@ -202,9 +209,9 @@ On x86-64, calling conventions are largely unified (one convention per OS), but 
 
 ** Related Notes
 
-- [[id:1d07decd-4659-494a-835e-defca639a771][C++ Smart Pointers & Ref]] — custom deleters can be function pointers; factory functions return smart pointers
-- [[id:608ddcb6-9345-4cee-9aae-9dc1c2783338][C++ Templates]] — templates subsume many function-pointer use cases (std::function is a template)
-- [[id:dae30869-f9e6-43e5-b188-661d59b714c4][C++ void* Pointers]] — function pointers and data pointers (void*) are distinct types
-- [[id:d90d89de-f807-4187-a9f7-a1501e9dcda5][C++ Memory Management]] — factory functions with function pointers manage ownership
-- [[id:f5899ea2-320f-4845-8ed3-68b68ba1cdcd][Copy Constructors]] — lambdas with copy captures invoke copy constructors
-- [[id:2ae84663-9f28-426d-a4eb-a8ffebae71b2][C++ Enum vs Struct Class]] — enums as non-type template parameters can select function-pointer specializations
+- [[id:20250527T230614][C++ Smart Pointers & Ref]] — custom deleters can be function pointers; factory functions return smart pointers
+- [[id:20250527T190202][C++ Templates]] — templates subsume many function-pointer use cases (std::function is a template)
+- [[id:20250527T061305][C++ void* Pointers]] — function pointers and data pointers (void*) are distinct types
+- [[id:20250527T012935][C++ Memory Management]] — factory functions with function pointers manage ownership
+- [[id:20250527T012125][Copy Constructors]] — lambdas with copy captures invoke copy constructors
+- [[id:20250527T033930][C++ Enum vs Struct Class]] — enums as non-type template parameters can select function-pointer specializations

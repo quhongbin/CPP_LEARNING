@@ -5,6 +5,7 @@
 #+hugo_tags: CPP
 #+hugo_custom_front_matter: :logs test
 #+hugo_custom_front_matter: :logs_descripe "中文测试"
+
 * virtual
 
 #+begin_quote
