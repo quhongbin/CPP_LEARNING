@@ -1,6 +1,7 @@
 #+title: control_flow
-#+hugo_section: zh-cn/posts
-#+hugo_tags: CPP
+#+hugo_section: en/cpp-notes
+#+hugo_tags: "Grammer"
+#+hugo_categories: "CPP"
 #+hugo_custom_front_matter: :logs power by AI
 #+hugo_custom_front_matter: :logs_descripe ""
 

@@ -1,10 +1,11 @@
-#+title: Class
+#+title: Virtual
 #+author: Hongbin Qu
 #+date: <2026-05-21 Thu>
-#+hugo_section: zh-cn/notes
-#+hugo_tags: CPP
-#+hugo_custom_front_matter: :logs test
-#+hugo_custom_front_matter: :logs_descripe "中文测试"
+#+hugo_section: en/cpp-notes
+#+hugo_tags: "Data Type"
+#+hugo_categories: "CPP"
+#+hugo_custom_front_matter: :logs "power by AI"
+#+hugo_custom_front_matter: :logs_descripe ""
 
 * virtual
 

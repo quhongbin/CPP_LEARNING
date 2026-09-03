@@ -1,12 +1,17 @@
-#+STARTUP: align
 :PROPERTIES:
 :ID:       7dd96312-bc82-4342-977a-256753a9229a
 :END:
 #+title: operating-system
+#+hugo_section: en/os
+#+hugo_tags: OSTEP
+#+hugo_categories: "Operating System"
+#+hugo_custom_front_matter: :logs "according to operating system - three easy pices"
+#+hugo_custom_front_matter: :logs_descripe "I am write the blogs for a few months. In the time, I have gave up and losted enthusiasm many times"
 
 * Process
 :PROPERTIES:
 :ROAM_ALIASES: OS process
+#+STARTUP: align
 :ID:       84dc9817-d304-46ce-b33f-273bfeee4f09
 :END:
 - A basic resources unit which is assigned with memory in OS
@@ -28,7 +33,7 @@
 :END:
 -
 
-| *dimension*                      | *Process*                                | *thread*                                   | *coroutine*                                 |
+| *dimension*                      | *Process*                              | *thread*                                 | *coroutine*                               |
 | *caller*                         | os's kernel                            | os's kernel                              | user program                              |
 | *memory space*                   | Individual(no shared)                  | share with Memory of Process             | share with Memory of Proces               |
 | *switching performance overhead* | very high (us-ms)                      | middle(us)                               | low(ns)                                   |
@@ -518,7 +523,10 @@ Assume we get 4K heap via malloc(), and virtual addres is 16384
 
 [[file:images/FreeSpace-Management/Embedding_Free_List.png]]
 
+When the three chunks are freed, there are a few of fragments in heap. So we need merge the chunks by coalescing
+
 *** DOING Basic Strategies
+DEADLINE: <2026-08-27 Thu> SCHEDULED: <2026-08-27 Thu>
 
 + best fit
 + Worst Fit
@@ -526,7 +534,7 @@ Assume we get 4K heap via malloc(), and virtual addres is 16384
 + Next Fit
 + segregated Lists
 
-
-* TODO
+* TODO test
+DEADLINE: <2026-08-27 Thu> SCHEDULED: <2026-08-27 Thu>
 
 + to explain stack memory how to allocate<2026-07-10 Fri>

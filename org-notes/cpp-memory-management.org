@@ -4,8 +4,9 @@
 #+title: C++ Memory Management
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-#+hugo_section: zh-cn/posts
-#+hugo_tags: CPP
+#+hugo_section: en/cpp-notes
+#+hugo_tags: "Memory Management"
+#+hugo_categories: "CPP"
 #+hugo_custom_front_matter: :logs power by AI
 #+hugo_custom_front_matter: :logs_descripe ""
 

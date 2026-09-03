@@ -4,10 +4,11 @@
 #+title: Godot Memory Allocation
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-#+hugo_section: zh-cn/notes
-#+hugo_tags: CPP
-#+hugo_custom_front_matter: :logs test
-#+hugo_custom_front_matter: :logs_descripe "中文测试"
+#+hugo_section: en/cpp-notes
+#+hugo_tags: "Memory Management"
+#+hugo_categories: "CPP"
+#+hugo_custom_front_matter: :logs "power by AI"
+#+hugo_custom_front_matter: :logs_descripe "The design about Memory Management of Godot game engine"
 
 
 * Godot Memory Allocation
@@ -34,9 +35,9 @@ void *Memory::alloc_static(size_t p_bytes, bool p_pad_align)
 ** Memory Layout
 
 ```
-| SIZE_OFFSET | DATA_OFFSET |
-| [real size] | [padding]   | [user data...]
-^              ^              ^
+| SIZE_OFFSET | DATA_OFFSET |                |
+| [real size] | [padding]   | [user data...] |
+
 malloc ptr     return ptr     user starts here
 ```
 

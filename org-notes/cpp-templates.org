@@ -4,10 +4,12 @@
 #+title: C++ Templates
 #+author: Hongbin Qu
 #+date: <2025-05-27 Tue>
-#+hugo_section: zh-cn/notes
-#+hugo_tags: CPP
-#+hugo_custom_front_matter: :logs test
-#+hugo_custom_front_matter: :logs_descripe "中文测试"
+#+hugo_section: en/cpp-notes
+#+hugo_tags: "templates"
+#+hugo_categories: "CPP"
+#+hugo_custom_front_matter: :logs "power by AI"
+#+hugo_custom_front_matter: :logs_descripe ""
+
 * C++ Templates
 
 Templates are C++'s mechanism for *generic programming* — writing code that works with any type without repeating yourself. Unlike runtime polymorphism (virtual functions), templates are resolved entirely at compile time: the compiler generates a separate copy of the function or class for each set of type arguments actually used. This is called *template instantiation*.
