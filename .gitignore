@@ -1,9 +1,3 @@
 .obsidian/
 themes/
 templates/
-.org-roam.db
-.hugo_build.lock
-Algorithm/BFS
-Algorithm/avl
-DataStruct/output.html
-DataStruct/output.md

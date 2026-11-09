@@ -148,6 +148,3 @@ int main() {
 #+end_src
 
 : Draw Circle
-
-** Reloaeted Notes
-[[id:20260904T161001][os-reference]]

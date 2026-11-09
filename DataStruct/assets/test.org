@@ -1,5 +1,0 @@
-:PROPERTIES:
-:ID:       ae5a54a9-75dd-4a66-993b-da4f373620d0
-:END:
-
-#+title: wo
