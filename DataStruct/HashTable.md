@@ -1,4 +1,9 @@
--   construct the reflection between key and value to archieve element-query with
+---
+title: HashTable
+---
+
+
+- construct the reflection between key and value to archieve element-query with
 > get value from hash table through index which calculate the input key with hash function 
 
 ### steps of hash(x) implementation

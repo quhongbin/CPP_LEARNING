@@ -26,11 +26,11 @@ void *Memory::alloc_static(size_t p_bytes, bool p_pad_align)
 
 ** Key Features
 
-1. **Zero-fill option** — If ~p_ensure_zero~ is ~true~, it uses ~calloc~ (zero-initialized). Otherwise ~malloc~.
-2. **Padding / Alignment** — When ~p_pad_align~ is ~true~ (or always in debug mode), it adds ~DATA_OFFSET~ extra bytes before the actual data. This stores the allocation size.
-3. **Size tracking** — The real size is written at ~SIZE_OFFSET~ bytes before the returned pointer. This helps detect buffer overflows.
-4. **Profiling** — ~GodotProfileAlloc~ tracks memory usage statistics.
-5. **Debug stats** — In debug mode, ~_current_mem_usage~ and ~_max_mem_usage~ track total memory.
+1. *Zero-fill option* — If ~p_ensure_zero~ is ~true~, it uses ~calloc~ (zero-initialized). Otherwise ~malloc~.
+2. *Padding / Alignment* — When ~p_pad_align~ is ~true~ (or always in debug mode), it adds ~DATA_OFFSET~ extra bytes before the actual data. This stores the allocation size.
+3. *Size tracking* — The real size is written at ~SIZE_OFFSET~ bytes before the returned pointer. This helps detect buffer overflows.
+4. *Profiling* — ~GodotProfileAlloc~ tracks memory usage statistics.
+5. *Debug stats* — In debug mode, ~_current_mem_usage~ and ~_max_mem_usage~ track total memory.
 
 ** Memory Layout
 
